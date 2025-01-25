@@ -10,10 +10,10 @@
 ############################
 
 # Name of website
-title: My website
+title: Ten of Heart's Blog
 
 # Your name to show in the footer
-author: Some Person
+author: Ten of Hearts
 
 ###############################################
 # --- List of links in the navigation bar --- #
@@ -24,7 +24,7 @@ navbar-links:
   Resources:
     - Beautiful Jekyll: "https://beautifuljekyll.com"
     - Learn markdown: "https://www.markdowntutorial.com/"
-  Author's home: "https://deanattali.com"
+  Author's home: "https://tenofhearts.github.io"
 
 ################
 # --- Logo --- #
