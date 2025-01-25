@@ -33,7 +33,6 @@ navbar-links:
 # Image to show in the navigation bar - works best with a square image
 # Remove this parameter if you don't want an image in the navbar
 avatar: "/assets/img/Profile.png"
-favicon: "/assets/img/Profile.ico"
 
 # By default, the image is cut into a circle. You can disable this behaviour by setting 'round-avatar: false'
 round-avatar: true
@@ -57,7 +56,7 @@ social-network-links:
   github: "https://github.com/TenofHearts/"
   # twitter: daattali
   # patreon: DeanAttali
-  # youtube: "@daattali"
+  youtube: "https://space.bilibili.com/488122039?spm_id_from=333.1007.0.0" 
   # whatsapp: 15551212
 #  medium: yourname
 #  reddit: yourname or r/yoursubreddit
@@ -83,7 +82,6 @@ social-network-links:
 #  gitlab: yourname
 #  itchio: yourname
 #  untappd: yourname
-  bilibili: "https://space.bilibili.com/488122039?spm_id_from=333.1007.0.0"
 
 # If you want your website to generate an RSS feed, provide a description
 # The URL for the feed will be https://<your_website>/feed.xml
