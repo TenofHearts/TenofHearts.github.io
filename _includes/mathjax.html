@@ -1,12 +1,15 @@
 {% if page.mathjax %}
 <script type="text/javascript">
-    MathJax = {
+    window.MathJax = {
         options: {
             skipHtmlTags: [
                 'script', 'noscript', 'style', 'textarea', 'pre', 'code'
             ],
+        },
+        tex: {
             inlineMath: [["$", "$"], ["\\(", "\\)"]], //行内公式选择符
             displayMath: [["$$", "$$"], ["\\[", "\\]"]], //段内公式选择符
+            processEscapes: true,      // use \$ to produce a literal dollar sign
         }
     };
 </script>
