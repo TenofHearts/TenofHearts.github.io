@@ -269,7 +269,7 @@ paginate: 5
 
 kramdown:
   input: GFM
-  use_coderay: true
+  enable_coderay: true
   math_engine: MathJax
 #   syntax_highlighter: rouge
 
