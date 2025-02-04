@@ -270,7 +270,7 @@ paginate: 5
 kramdown:
   input: GFM
   enable_coderay: true
-  math_engine: KaTeX
+  math_engine: MathJax
 #   syntax_highlighter: rouge
 
 # commonmark:
