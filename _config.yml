@@ -269,9 +269,8 @@ paginate: 5
 
 kramdown:
   input: GFM
-  enable_coderay: true
-  math_engine: MathJax
-#   syntax_highlighter: rouge
+  syntax_highlighter: coderay # rough or coderay
+  # math_engine: MathJax
 
 # commonmark:
 #   options: ["UNSAFE", "SMART", "FOOTNOTES"]
