@@ -118,11 +118,6 @@ reverse %}
             <p class="post-meta">
                 <i class="far fa-calendar-alt" aria-hidden="true"></i> {{ post.date | date: "%Y年%m月%d日" }}
             </p>
-            {% if post.excerpt %}
-            <div class="post-excerpt">
-                {{ post.excerpt | strip_html | truncatewords: 50 }}
-            </div>
-            {% endif %}
         </article>
     </li>
     {% endfor %}

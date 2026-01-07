@@ -6,18 +6,18 @@ layout: page
 
 <style>
     .categories-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 30px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
         margin-top: 30px;
     }
 
     .category-card {
         background: #fff;
         border: 1px solid #e0e0e0;
-        border-radius: 10px;
-        overflow: hidden;
-        transition: transform 0.3s, box-shadow 0.3s;
+        border-radius: 8px;
+        padding: 25px;
+        transition: box-shadow 0.3s, transform 0.3s;
         cursor: pointer;
         text-decoration: none;
         color: inherit;
@@ -25,58 +25,38 @@ layout: page
     }
 
     .category-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        transform: translateX(5px);
         text-decoration: none;
     }
 
-    .category-card-image {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
-
-    .category-card-content {
-        padding: 20px;
-    }
-
     .category-card-title {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
         font-weight: 600;
         margin-bottom: 10px;
         color: #333;
+        transition: color 0.3s;
+    }
+
+    .category-card:hover .category-card-title {
+        color: #667eea;
     }
 
     .category-card-description {
         font-size: 1rem;
         color: #666;
         line-height: 1.6;
-        margin-bottom: 15px;
+        margin-bottom: 10px;
     }
 
     .category-card-count {
         font-size: 0.9rem;
         color: #999;
     }
-
-    /* 为不同分类定义不同的渐变色 */
-    .category-card-image.algorithms {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
-
-    .category-card-image.pa {
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    }
-
-    .category-card-image.default {
-        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    }
 </style>
 
-{% comment %}获取所有包含 _info.html 的分类{% endcomment %}
-{% assign category_infos = site.pages | where_exp: "page", "page.path contains '_posts/' and page.path contains
-'_info.html'" %}
+{% comment %}获取 categories 文件夹中的所有分类配置{% endcomment %}
+{% assign category_infos = site.pages | where_exp: "page", "page.path contains 'categories/'" %}
 
 <div class="categories-container">
     {% for info_page in category_infos %}
@@ -84,14 +64,11 @@ layout: page
     {% assign category_posts = site.posts | where_exp: "post", "post.path contains info_page.category_name" %}
 
     <a href="{{ info_page.url }}" class="category-card">
-        <div class="category-card-image {{ info_page.cover_class | default: 'default' }}"></div>
-        <div class="category-card-content">
-            <h2 class="category-card-title">{{ info_page.title }}</h2>
-            <p class="category-card-description">
-                {{ info_page.description }}
-            </p>
-            <p class="category-card-count">{{ category_posts | size }} 篇文章</p>
-        </div>
+        <h2 class="category-card-title">{{ info_page.title }}</h2>
+        <p class="category-card-description">
+            {{ info_page.description }}
+        </p>
+        <p class="category-card-count">{{ category_posts | size }} 篇文章</p>
     </a>
     {% endfor %}
 </div>
