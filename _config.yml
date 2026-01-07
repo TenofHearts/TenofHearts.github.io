@@ -58,7 +58,7 @@ social-network-links:
   github: "https://github.com/TenofHearts/"
   # twitter: daattali
   # patreon: DeanAttali
-  youtube: "https://space.bilibili.com/488122039?spm_id_from=333.1007.0.0" 
+  # youtube: "https://space.bilibili.com/488122039?spm_id_from=333.1007.0.0" 
   # whatsapp: 15551212
 #  medium: yourname
 #  reddit: yourname or r/yoursubreddit
@@ -269,9 +269,8 @@ paginate: 5
 
 kramdown:
   input: GFM
-  enable_coderay: true
-  math_engine: MathJax
-#   syntax_highlighter: rouge
+  syntax_highlighter: coderay # rough or coderay
+  # math_engine: MathJax
 
 # commonmark:
 #   options: ["UNSAFE", "SMART", "FOOTNOTES"]
