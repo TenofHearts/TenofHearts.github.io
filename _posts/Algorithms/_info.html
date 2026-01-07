@@ -1,0 +1,134 @@
+---
+layout: page
+title: Algorithms
+description: 算法学习笔记与分析，探索各种算法的原理和应用
+cover_class: algorithms
+permalink: /category/algorithms.html
+category_name: Algorithms
+---
+
+<style>
+    .posts-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .post-preview {
+        background: #fff;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 25px;
+        margin-bottom: 25px;
+        transition: box-shadow 0.3s, transform 0.3s;
+    }
+
+    .post-preview:hover {
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        transform: translateX(5px);
+    }
+
+    .post-preview a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .post-title {
+        font-size: 1.6rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 10px;
+        transition: color 0.3s;
+    }
+
+    .post-preview:hover .post-title {
+        color: #667eea;
+    }
+
+    .post-subtitle {
+        font-size: 1.1rem;
+        color: #666;
+        margin-bottom: 10px;
+        font-weight: 400;
+    }
+
+    .post-meta {
+        font-size: 0.9rem;
+        color: #999;
+        margin-bottom: 15px;
+    }
+
+    .post-excerpt {
+        font-size: 1rem;
+        color: #555;
+        line-height: 1.6;
+    }
+
+    .back-link {
+        display: inline-block;
+        margin-bottom: 30px;
+        padding: 10px 20px;
+        background: #f5f5f5;
+        border-radius: 5px;
+        text-decoration: none;
+        color: #333;
+        transition: background 0.3s;
+    }
+
+    .back-link:hover {
+        background: #e0e0e0;
+        text-decoration: none;
+    }
+
+    .category-header {
+        margin-bottom: 30px;
+    }
+
+    .category-title {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+    }
+
+    .category-description {
+        font-size: 1.2rem;
+        color: #666;
+    }
+</style>
+
+<a href="/" class="back-link">← 返回首页</a>
+
+<div class="category-header">
+    <h1 class="category-title">{{ page.title }}</h1>
+    {% if page.description %}
+    <p class="category-description">{{ page.description }}</p>
+    {% endif %}
+</div>
+
+{% assign category_posts = site.posts | where_exp: "post", "post.path contains page.category_name" | sort: "date" |
+reverse %}
+
+<ul class="posts-list list-unstyled" role="list">
+    {% for post in category_posts %}
+    <li class="post-preview">
+        <article>
+            <a href="{{ post.url | absolute_url }}">
+                <h2 class="post-title">{{ post.title | strip_html }}</h2>
+                {% if post.subtitle %}
+                <h3 class="post-subtitle">{{ post.subtitle | strip_html }}</h3>
+                {% endif %}
+            </a>
+            <p class="post-meta">
+                <i class="far fa-calendar-alt" aria-hidden="true"></i> {{ post.date | date: "%Y年%m月%d日" }}
+            </p>
+            {% if post.excerpt %}
+            <div class="post-excerpt">
+                {{ post.excerpt | strip_html | truncatewords: 50 }}
+            </div>
+            {% endif %}
+        </article>
+    </li>
+    {% endfor %}
+</ul>
+
+{% if category_posts.size == 0 %}
+<p style="text-align: center; color: #999; padding: 50px 0;">暂无文章</p>
+{% endif %}

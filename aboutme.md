@@ -4,7 +4,7 @@ title: About me
 subtitle: This is where you learn some basic things about me. 
 ---
 
-# About Me
+# Resume
 
 ---
 

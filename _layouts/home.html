@@ -5,61 +5,93 @@ layout: page
 {{ content }}
 
 <style>
-    .category-toggle {
-        cursor: pointer;
-        user-select: none;
-        font-size: 1.5rem;
-        margin-top: 20px;
+    .categories-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 30px;
     }
 
-    .posts-list-collapsible {
-        display: none;
-        padding-left: 20px;
+    .category-card {
+        background: #fff;
+        border: 1px solid #e0e0e0;
+        border-radius: 10px;
+        overflow: hidden;
+        transition: transform 0.3s, box-shadow 0.3s;
+        cursor: pointer;
+        text-decoration: none;
+        color: inherit;
+        display: block;
+    }
+
+    .category-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        text-decoration: none;
+    }
+
+    .category-card-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .category-card-content {
+        padding: 20px;
+    }
+
+    .category-card-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    .category-card-description {
+        font-size: 1rem;
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 15px;
+    }
+
+    .category-card-count {
+        font-size: 0.9rem;
+        color: #999;
+    }
+
+    /* 为不同分类定义不同的渐变色 */
+    .category-card-image.algorithms {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .category-card-image.pa {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+
+    .category-card-image.default {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
     }
 </style>
 
-{% assign categories = site.posts | group_by_exp:"post", "post.path | split: '/' | slice: 1, 1 | first" | sort: "name"
-%}
+{% comment %}获取所有包含 _info.html 的分类{% endcomment %}
+{% assign category_infos = site.pages | where_exp: "page", "page.path contains '_posts/' and page.path contains
+'_info.html'" %}
 
-{% for category in categories %}
-{% if category.name %}
-<div class="category-section">
-    <h2 class="category-toggle" onclick="toggleCategory('{{ category.name | slugify }}')">
-        {{ category.name }} <span id="arrow-{{ category.name | slugify }}">&#9658;</span>
-    </h2>
-    <ul class="posts-list list-unstyled posts-list-collapsible" id="posts-{{ category.name | slugify }}" role="list">
-        {% for post in category.items %}
-        <li class="post-preview">
-            <article>
-                <a href="{{ post.url | absolute_url }}">
-                    <h3 class="post-title">{{ post.title | strip_html }}</h3>
-                    {% if post.subtitle %}
-                    <h4 class="post-subtitle">
-                        {{ post.subtitle | strip_html }}
-                    </h4>
-                    {% endif %}
-                </a>
-                <p class="post-meta">
-                    Posted on {{ post.date | date: "%B %-d, %Y" }}
-                </p>
-            </article>
-        </li>
-        {% endfor %}
-    </ul>
+<div class="categories-container">
+    {% for info_page in category_infos %}
+    {% comment %}计算该分类下的文章数量{% endcomment %}
+    {% assign category_posts = site.posts | where_exp: "post", "post.path contains info_page.category_name" %}
+
+    <a href="{{ info_page.url }}" class="category-card">
+        <div class="category-card-image {{ info_page.cover_class | default: 'default' }}"></div>
+        <div class="category-card-content">
+            <h2 class="category-card-title">{{ info_page.title }}</h2>
+            <p class="category-card-description">
+                {{ info_page.description }}
+            </p>
+            <p class="category-card-count">{{ category_posts | size }} 篇文章</p>
+        </div>
+    </a>
+    {% endfor %}
 </div>
-{% endif %}
-{% endfor %}
-
-<script>
-    function toggleCategory(categoryId) {
-        var postsList = document.getElementById('posts-' + categoryId);
-        var arrow = document.getElementById('arrow-' + categoryId);
-        if (postsList.style.display === 'none' || postsList.style.display === '') {
-            postsList.style.display = 'block';
-            arrow.innerHTML = '&#9660;';
-        } else {
-            postsList.style.display = 'none';
-            arrow.innerHTML = '&#9658;';
-        }
-    }
-</script>
