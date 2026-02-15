@@ -56,6 +56,11 @@ layout: base
             </div>
             {% endif %}
 
+            {% comment %}获取当前文章所属的category并生成分类页链接{% endcomment %}
+            {% assign current_category = page.path | split: "/" | slice: 1, 1 | first %}
+            {% assign category_url = '/category/' | append: current_category | downcase | append: '.html' | relative_url
+            %}
+
             {% if page.before-content %}
             <div class="before-content">
                 {% for file in page.before-content %}
@@ -63,6 +68,10 @@ layout: base
                 {% endfor %}
             </div>
             {% endif %}
+
+            <p>
+                <a class="back-link" href="{{ category_url }}">← 返回</a>
+            </p>
 
             <div class="blog-post">
                 {{ content }}
@@ -88,11 +97,6 @@ layout: base
             {% if page.social-share %}
             {% include social-share.html %}
             {% endif %}
-
-            {% comment %}获取当前文章所属的category{% endcomment %}
-            {% assign current_category = page.path | split: "/" | slice: 1, 1 | first %}
-            {% assign category_url = '/category/' | append: current_category | downcase | append: '.html' | relative_url
-            %}
 
             {% comment %}获取同一category下的所有文章并按日期排序{% endcomment %}
             {% assign category_posts = site.posts
