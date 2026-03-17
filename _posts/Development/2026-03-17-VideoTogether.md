@@ -51,9 +51,11 @@ npm run host:start
 上述三大组件便会自动运行: 在弹出的控制面板中丢进去视频和字幕后
 ![上传或选择视频](../../assets/img/Dev/VideoTogether/fig1.png)
 ![上传字幕](../../assets/img/Dev/VideoTogether/fig2.png)
+
 就可以创建房间, 并且分享房间链接
 ![创建房间](../../assets/img/Dev/VideoTogether/fig3.png)
 ![分享链接](../../assets/img/Dev/VideoTogether/fig4.png)
+
 将 `LAN Room URL` 分享给朋友, 自己打开 `Local Host URL`, 就可以一起开心地看电影啦~ 在看电影的过程中, 任何一方暂停, 播放, 拖动进度条的行为都会同步给另一方, 这样即使身在异地, 也可以沉浸式地一起看电影. 
 
 ## 环境配置
