@@ -145,7 +145,7 @@ layout: page
 {% assign info_path = "_posts/" | append: page.category_name | append: "/_info.md" %}
 {% assign category_info = site.pages | where: "path", info_path | first %}
 
-<a href="/" class="back-link">← 返回首页</a>
+<a href="/" class="back-link">← 返回</a>
 
 <div class="category-header">
     <h1 class="category-title">{{ category_info.title | default: page.category_name }}</h1>
