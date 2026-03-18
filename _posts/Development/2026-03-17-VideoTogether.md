@@ -29,7 +29,7 @@ mathjax: true
 
 既然市面上没有现成的完美方案, 那干脆我自己动手撸一个吧!
 
-Introducing ***[VideoTogether](https://github.com/TenofHearts/VideoTogether)***...
+Introducing ***[VideoTogether](https://github.com/TenofHearts/VideoTogether)***... ~~欢迎大家Star~~
 
 ---
 
