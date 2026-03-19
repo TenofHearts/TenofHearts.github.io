@@ -5,20 +5,16 @@
 {% assign finalReadTime = calcReadTime | divided_by:200 | round: 2 %}
 {% assign number = finalReadTime | round %}
 {% if number >= 1 %}
-  {% if site.active_lang == "en" %}
-    {% assign yesReadTime = number | append: " min read" %}
-  {% else %}
-    {% assign yesReadTime = "预计阅读时间：" | append: number | append: " 分钟" %}
-  {% endif %}
-  <span class="post-meta"><span class="d-none d-md-inline middot">&middot;</span> {{ yesReadTime }}</span>
-{% elsif number < 1 %}
-  {% if site.active_lang == "en" %}
-    {% assign minReadTime = '< 1 min read' %}
-  {% else %}
-    {% assign minReadTime = '预计阅读时间：小于 1 分钟' %}
-  {% endif %}
-  <span class="post-meta"><span class="d-none d-md-inline middot">&middot;</span> {{ minReadTime }}</span>
+{% if site.active_lang == "en" %}
+{% assign yesReadTime = number | append: " min read" %}
 {% else %}
-  {% assign nilReadTime = number | replace:'0',' ' %}
-  {{ nilReadTime }}
+{% assign yesReadTime = "预计阅读时间：" | append: number | append: " 分钟" %}
 {% endif %}
+<span class="post-meta"><span class="d-none d-md-inline middot">&middot;</span> {{ yesReadTime }}</span>
+{% elsif number < 1 %} {% if site.active_lang=="en" %} {% assign minReadTime='< 1 min read' %} {% else %} {% assign
+    minReadTime='预计阅读时间：小于 1 分钟' %} {% endif %} <span class="post-meta"><span
+        class="d-none d-md-inline middot">&middot;</span> {{ minReadTime }}</span>
+    {% else %}
+    {% assign nilReadTime = number | replace:'0',' ' %}
+    {{ nilReadTime }}
+    {% endif %}
