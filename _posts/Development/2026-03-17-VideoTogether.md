@@ -35,6 +35,8 @@ Introducing ***[VideoTogether](https://github.com/TenofHearts/VideoTogether)***.
 
 ## 功能介绍
 
+> **News**: [VideoTogether windows安装包](https://github.com/TenofHearts/VideoTogether/releases)已经上线啦!
+
 VideoTogether 包含三大核心组件: 
 1. `server`: 一个本地服务端, 负责处理视频媒体数据, 实时同步房间播放进度等核心逻辑. 完美摆脱了额外服务器的束缚, 可直接在本地机器部署. 
 2. `web`: 播放视频的网页前端. 
