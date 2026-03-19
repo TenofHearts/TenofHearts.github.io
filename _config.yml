@@ -319,6 +319,7 @@ plugins:
 # Polyglot Languages Configuration
 languages: ["zh", "en"]
 default_lang: "zh"
+parallel_localization: false
 exclude_from_localization:
   - assets/
   - images/
