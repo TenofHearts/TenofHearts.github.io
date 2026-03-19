@@ -45,7 +45,14 @@
 
             <li class="nav-item">
                 {% if site.active_lang == "en" %}
-                <a class="nav-link" href="{{ site.baseurl | default: '' }}{{ page.url }}">中</a>
+                {% assign zh_url = page.url | replace_first: '/en/', '/' %}
+                {% if zh_url == page.url %}
+                {% assign zh_url = page.url | replace_first: '/en', '' %}
+                {% endif %}
+                {% if zh_url == '' %}
+                {% assign zh_url = '/' %}
+                {% endif %}
+                <a class="nav-link" href="{{ site.baseurl | default: '' }}{{ zh_url }}">中</a>
                 {% else %}
                 <a class="nav-link" href="{{ site.baseurl | default: '' }}/en{{ page.url }}">EN</a> {% endif %}
             </li>
