@@ -7,6 +7,7 @@ gemspec
 group :jekyll_plugins do
     gem 'jekyll-commonmark-ghpages'
     gem 'kramdown-syntax-coderay'
+    gem 'jekyll-polyglot'
   end
 gem "webrick", "~> 1.9"
 

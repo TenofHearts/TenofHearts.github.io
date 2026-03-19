@@ -145,12 +145,18 @@ layout: page
 {% assign info_path = "_posts/" | append: page.category_name | append: "/_info.md" %}
 {% assign category_info = site.pages | where: "path", info_path | first %}
 
-<a href="/" class="back-link">← 返回</a>
+<a href="/" class="back-link">← {% if site.active_lang == "en" %}Back{% else %}返回{% endif %}</a>
 
 <div class="category-header">
-    <h1 class="category-title">{{ category_info.title | default: page.category_name }}</h1>
-    {% if category_info.description %}
-    <p class="category-description">{{ category_info.description }}</p>
+    {% assign display_title = page.title %}
+    {% assign display_desc = page.description %}
+    {% if site.active_lang == "en" %}
+    {% if page.title-en %}{% assign display_title = page.title-en %}{% endif %}
+    {% if page.description-en %}{% assign display_desc = page.description-en %}{% endif %}
+    {% endif %}
+    <h1 class="category-title">{{ display_title | default: page.category_name }}</h1>
+    {% if display_desc %}
+    <p class="category-description">{{ display_desc }}</p>
     {% endif %}
 </div>
 
@@ -190,5 +196,7 @@ reverse %}
 </ul>
 
 {% if category_posts.size == 0 %}
-<p style="text-align: center; color: #999; padding: 50px 0;">暂无文章</p>
+<p style="text-align: center; color: #999; padding: 50px 0;">
+    {% if site.active_lang == "en" %}No posts yet{% else %}暂无文章{% endif %}
+</p>
 {% endif %}

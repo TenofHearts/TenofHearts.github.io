@@ -1,9 +1,9 @@
 ---
 layout: page
-title: About me
-subtitle: This is where you learn some basic things about me. 
----
-
+title: 关于我
+subtitle: 了解我的一些基本信息
+lang: zh
+permalink: /aboutme/
 # Resume
 
 ---

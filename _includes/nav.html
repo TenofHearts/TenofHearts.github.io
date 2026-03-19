@@ -1,61 +1,80 @@
-<nav class="navbar navbar-expand-xl navbar-light fixed-top navbar-custom {% if page.nav-short %}top-nav-short-permanent{% else %}top-nav-regular{% endif %}">
+<nav
+    class="navbar navbar-expand-xl navbar-light fixed-top navbar-custom {% if page.nav-short %}top-nav-short-permanent{% else %}top-nav-regular{% endif %}">
 
-  {%- if site.title-img -%}
-    <a class="navbar-brand navbar-brand-logo" href="{{ '/' | absolute_url }}"><img alt="{{ site.title }} Logo" src="{{ site.title-img | relative_url}}"/></a>
-  {%- elsif site.title -%}
-    <a class="navbar-brand" href="{{ '/' | absolute_url }}">{{ site.title }}</a>
-  {%- endif -%}
+    {%- if site.title-img -%}
+    <a class="navbar-brand navbar-brand-logo" href="{{ '/' | absolute_url }}"><img alt="{{ site.title }} Logo"
+            src="{{ site.title-img | relative_url}}" /></a>
+    {%- elsif site.title -%}
+    {% assign blog_title = site.title %}
+    {% if site.active_lang == "en" and site.title-en %}
+    {% assign blog_title = site.title-en %}
+    {% endif %}
+    <a class="navbar-brand" href="{{ '/' | absolute_url }}">{{ blog_title }}</a>
+    {%- endif -%}
 
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar"
+        aria-controls="main-navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-  <div class="collapse navbar-collapse" id="main-navbar">
-    <ul class="navbar-nav ml-auto">
-      {%- for link in site.navbar-links -%}
-        {%- if link[1].first %}
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ link[0] }}</a>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-              {%- for childlink in link[1] -%}
-                {%- for linkparts in childlink %}
-                  <a class="dropdown-item" href="{{ linkparts[1] | relative_url }}">{{ linkparts[0] }}</a>
-                {%- endfor -%}
-              {%- endfor %}
-            </div>
-          </li>
-        {% else %}
-          <li class="nav-item">
-            <a class="nav-link" href="{{ link[1] | relative_url }}">{{ link[0] }}</a>
-          </li>
-        {%- endif -%}
-      {%- endfor -%}
-      {% if site.post_search %}
-        <li class="nav-item">
-          <a class="nav-link" id="nav-search-link" href="#" title="Search">
-            <span id="nav-search-icon" class="fa fa-search"></span>
-            <span id="nav-search-text">Search</span>
-          </a>
-        </li>
-      {%- endif -%}
-    </ul>
-  </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+        <ul class="navbar-nav ml-auto">
+            {% assign navbar_links = site.navbar-links %}
+            {% if site.active_lang == "en" and site.navbar-links-en %}
+            {% assign navbar_links = site.navbar-links-en %}
+            {% endif %}
+            {%- for link in navbar_links -%}
+            {%- if link[1].first %}
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">{{ link[0] }}</a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                    {%- for childlink in link[1] -%}
+                    {%- for linkparts in childlink %}
+                    <a class="dropdown-item" href="{{ linkparts[1] | relative_url }}">{{ linkparts[0] }}</a>
+                    {%- endfor -%}
+                    {%- endfor %}
+                </div>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ link[1] | relative_url }}">{{ link[0] }}</a>
+            </li>
+            {%- endif -%}
+            {%- endfor -%}
 
-  {% if site.navbar-extra %}
-    {% for file in site.navbar-extra %}
-      {% include {{ file }} %}
-    {% endfor %}
-  {% endif %}
+            <li class="nav-item">
+                {% if site.active_lang == "en" %}
+                <a class="nav-link" href="{{ site.baseurl | default: '' }}{{ page.url }}">中</a>
+                {% else %}
+                <a class="nav-link" href="{{ site.baseurl | default: '' }}/en{{ page.url }}">EN</a>
 
-  {% if site.avatar and page.show-avatar != false %}
-    <div class="avatar-container">
-      <div class="avatar-img-border">
-        <a href="{{ '/' | absolute_url }}">
-          <img alt="Navigation bar avatar" class="avatar-img" src="{{ site.avatar | relative_url }}" />
-        </a>
-      </div>
+                {% if site.post_search %}
+            <li class="nav-item">
+                <a class="nav-link" id="nav-search-link" href="#" title="Search">
+                    <span id="nav-search-icon" class="fa fa-search"></span>
+                    <span id="nav-search-text">{% if site.active_lang == "en" %}Search{% else %}搜索{% endif %}</span>
+                </a>
+            </li>
+            {%- endif -%}
+        </ul>
     </div>
-  {% endif %}
+
+    {% if site.navbar-extra %}
+    {% for file in site.navbar-extra %}
+    {% include {{ file }} %}
+    {% endfor %}
+    {% endif %}
+
+    {% if site.avatar and page.show-avatar != false %}
+    <div class="avatar-container">
+        <div class="avatar-img-border">
+            <a href="{{ '/' | absolute_url }}">
+                <img alt="Navigation bar avatar" class="avatar-img" src="{{ site.avatar | relative_url }}" />
+            </a>
+        </div>
+    </div>
+    {% endif %}
 
 </nav>
 

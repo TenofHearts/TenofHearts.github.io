@@ -102,11 +102,24 @@ layout: page
 
     <a href="{{ info_page.url }}" class="category-card">
         <div class="category-card-content">
-            <h2 class="category-card-title">{{ info_page.title }}</h2>
+            {% assign cat_title = info_page.title %}
+            {% assign cat_desc = info_page.description %}
+            {% if site.active_lang == "en" %}
+            {% if info_page.title-en %}{% assign cat_title = info_page.title-en %}{% endif %}
+            {% if info_page.description-en %}{% assign cat_desc = info_page.description-en %}{% endif %}
+            {% endif %}
+            <h2 class="category-card-title">{{ cat_title }}</h2>
             <p class="category-card-description">
-                {{ info_page.description }}
+                {{ cat_desc }}
             </p>
-            <p class="category-card-count">{{ category_posts | size }} 篇文章</p>
+            <p class="category-card-count">
+                {{ category_posts | size }}
+                {% if site.active_lang == "en" %}
+                Posts
+                {% else %}
+                篇文章
+                {% endif %}
+            </p>
         </div>
         {% if info_page.thumbnail-img %}
         <div class="category-card-thumbnail"
