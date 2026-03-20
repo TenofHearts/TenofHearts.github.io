@@ -101,7 +101,9 @@ Of course not! We only need to use [ZeroTier](https://www.zerotier.com/) to easi
 > * **Address Overlap (Ambiguity):** There are hundreds of millions of intranets all over the world using the address `192.168.1.1`. If you initiate a request on the WAN, how would the router distinguish which household's "1.1" to send to? 
 > * **Routing Barrier:** The rule of core internet routers (ISPs) is to directly **discard** or ignore all private IP packets. Once these packets attempt to break through the router defense line into the public network, they will be ruthlessly annihilated. 
 > * **The "Mailroom" Mechanism of NAT:** For an intranet minion to venture into the external network, it must rely on the router (NAT) to temporarily disguise it as a public IP. And for connection requests initiated from the outside, if "port forwarding" has not been set up in advance with the mailroom uncle, it is like a delivery guy arriving at the building entrance completely blind, not knowing which extension to deliver to; establishing a connection is naturally impossible. 
+> 
 > ---
+> 
 > **Conclusion:** The public IP is the unique business card, while the intranet IP is the internal code. The original intent of the intranet was to conserve IP resources while simultaneously wrapping internal devices in a natural "bumper". 
 
 ---
