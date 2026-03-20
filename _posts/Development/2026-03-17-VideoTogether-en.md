@@ -96,6 +96,7 @@ Of course not! We only need to use [ZeroTier](https://www.zerotier.com/) to easi
 > The **Intranet** (LAN) is like the **office number** inside the building (e.g., Room 302). 
 > * Every company (family, school) can have its own "Room 302". 
 > * These numbers are only meaningful internally, but if you stop a random person on the street and ask "Where is Room 302?", they will be completely confused because they don't know which building's "302" you are referring to. 
+>
 > ##### 3. Why Can't Intranet IPv4 be Directly Accessed from the Outside? 
 > This stems from the scarcity of IPv4 address resources and the design of the **NAT (Network Address Translation)** mechanism. The core reasons are these three: 
 > * **Address Overlap (Ambiguity):** There are hundreds of millions of intranets all over the world using the address `192.168.1.1`. If you initiate a request on the WAN, how would the router distinguish which household's "1.1" to send to? 
