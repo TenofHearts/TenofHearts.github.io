@@ -76,10 +76,12 @@
                 {% elsif en_url contains '/en/' %}
                 {% assign en_url = en_url %}
                 {% else %}
-                {% if page.path contains '_posts/' and page.path contains '-en.' == false %}
+                {% if page.path contains '_posts/' %}
+                {% unless page.path contains '-en.' %}
                 {% assign post_file = page.path | split: '/' | last %}
                 {% assign post_slug = post_file | replace: '.md', '' %}
                 {% assign en_url = '/' | append: post_slug | append: '-en/' %}
+                {% endunless %}
                 {% endif %}
                 {% if en_url contains '/en/' %}
                 {% assign en_url = en_url %}
