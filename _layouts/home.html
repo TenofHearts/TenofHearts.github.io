@@ -103,7 +103,7 @@ layout: page
     <a href="{{ info_page.url }}" class="category-card">
         <div class="category-card-content">
             {% assign cat_title = info_page.title %}
-            {% assign cat_desc = info_page.description %}
+            {% assign cat_desc = info_page.description_zh %}
             {% if site.active_lang == "en" %}
             {% if info_page.title-en %}{% assign cat_title = info_page.title-en %}{% endif %}
             {% if info_page.description-en %}{% assign cat_desc = info_page.description-en %}{% endif %}
