@@ -2,6 +2,10 @@
     class="navbar navbar-expand-xl navbar-light fixed-top navbar-custom {% if page.nav-short %}top-nav-short-permanent{% else %}top-nav-regular{% endif %}">
 
     {% assign current_lang = page.lang | default: site.active_lang %}
+    {% if current_lang != 'en' and (page.url contains '/en/' or page.path contains '-en.' or page.path contains '.en.')
+    %}
+    {% assign current_lang = 'en' %}
+    {% endif %}
 
     {% assign home_url = '/' %}
     {% if current_lang == 'en' %}
@@ -9,14 +13,17 @@
     {% endif %}
 
     {%- if site.title-img -%}
-    <a class="navbar-brand navbar-brand-logo" href="{{ home_url | relative_url }}"><img alt="{{ site.title }} Logo"
-            src="{{ site.title-img | relative_url}}" /></a>
+    <a class="navbar-brand navbar-brand-logo" href="{{ site.baseurl | default: '' }}{{ home_url }}"
+        data-switch-url="{{ home_url }}"
+        onclick="window.location.href=this.getAttribute('data-switch-url'); return false;"><img
+            alt="{{ site.title }} Logo" src="{{ site.title-img | relative_url}}" /></a>
     {%- elsif site.title -%}
     {% assign blog_title = site.title %}
     {% if current_lang == "en" and site.title-en %}
     {% assign blog_title = site.title-en %}
     {% endif %}
-    <a class="navbar-brand" href="{{ home_url | relative_url }}">{{ blog_title }}</a>
+    <a class="navbar-brand" href="{{ site.baseurl | default: '' }}{{ home_url }}" data-switch-url="{{ home_url }}"
+        onclick="window.location.href=this.getAttribute('data-switch-url'); return false;">{{ blog_title }}</a>
     {%- endif -%}
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar"
@@ -70,11 +77,9 @@
                 {% assign en_url = en_url %}
                 {% else %}
                 {% if page.path contains '_posts/' and page.path contains '-en.' == false %}
-                {% assign en_path = page.path | replace: '.md', '-en.md' %}
-                {% assign en_post = site.posts | where: 'path', en_path | first %}
-                {% if en_post %}
-                {% assign en_url = en_post.url %}
-                {% endif %}
+                {% assign post_file = page.path | split: '/' | last %}
+                {% assign post_slug = post_file | replace: '.md', '' %}
+                {% assign en_url = '/' | append: post_slug | append: '-en/' %}
                 {% endif %}
                 {% if en_url contains '/en/' %}
                 {% assign en_url = en_url %}
@@ -110,7 +115,8 @@
     {% if site.avatar and page.show-avatar != false %}
     <div class="avatar-container">
         <div class="avatar-img-border">
-            <a href="{{ home_url | relative_url }}">
+            <a href="{{ site.baseurl | default: '' }}{{ home_url }}" data-switch-url="{{ home_url }}"
+                onclick="window.location.href=this.getAttribute('data-switch-url'); return false;">
                 <img alt="Navigation bar avatar" class="avatar-img" src="{{ site.avatar | relative_url }}" />
             </a>
         </div>
