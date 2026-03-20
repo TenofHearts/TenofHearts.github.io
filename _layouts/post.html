@@ -58,8 +58,11 @@ layout: base
 
             {% comment %}获取当前文章所属的category并生成分类页链接{% endcomment %}
             {% assign current_category = page.path | split: "/" | slice: 1, 1 | first %}
-            {% assign category_url = '/category/' | append: current_category | downcase | append: '.html' | relative_url
-            %}
+            {% assign category_path = '/category/' | append: current_category | downcase | append: '.html' %}
+            {% if site.active_lang == 'en' %}
+            {% assign category_path = '/en' | append: category_path %}
+            {% endif %}
+            {% assign category_url = category_path | relative_url %}
 
             {% if page.before-content %}
             <div class="before-content">
@@ -70,7 +73,8 @@ layout: base
             {% endif %}
 
             <p>
-                <a class="back-link" href="{{ category_url }}">← 返回</a>
+                <a class="back-link" href="{{ category_url }}">← {% if site.active_lang == "en" %}Back{% else %}返回{%
+                    endif %}</a>
             </p>
 
             <div class="blog-post">
@@ -124,7 +128,8 @@ layout: base
             {% assign prev_post = category_posts[prev_index] %}
             {% endif %}
             {% if next_index < category_posts.size %} {% assign next_post=category_posts[next_index] %} {% endif %} <p>
-                <a class="back-link" href="{{ category_url }}">← 返回</a>
+                <a class="back-link" href="{{ category_url }}">← {% if site.active_lang == "en" %}Back{% else %}返回{%
+                    endif %}</a>
                 </p>
 
                 <ul class="pagination blog-pager">

@@ -1,15 +1,20 @@
 <nav
     class="navbar navbar-expand-xl navbar-light fixed-top navbar-custom {% if page.nav-short %}top-nav-short-permanent{% else %}top-nav-regular{% endif %}">
 
+    {% assign home_url = '/' %}
+    {% if site.active_lang == 'en' %}
+    {% assign home_url = '/en/' %}
+    {% endif %}
+
     {%- if site.title-img -%}
-    <a class="navbar-brand navbar-brand-logo" href="{{ '/' | absolute_url }}"><img alt="{{ site.title }} Logo"
+    <a class="navbar-brand navbar-brand-logo" href="{{ home_url | relative_url }}"><img alt="{{ site.title }} Logo"
             src="{{ site.title-img | relative_url}}" /></a>
     {%- elsif site.title -%}
     {% assign blog_title = site.title %}
     {% if site.active_lang == "en" and site.title-en %}
     {% assign blog_title = site.title-en %}
     {% endif %}
-    <a class="navbar-brand" href="{{ '/' | absolute_url }}">{{ blog_title }}</a>
+    <a class="navbar-brand" href="{{ home_url | relative_url }}">{{ blog_title }}</a>
     {%- endif -%}
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar"
@@ -51,6 +56,7 @@
                 {% elsif zh_url contains '/en/' %}
                 {% assign zh_url = zh_url | replace_first: '/en/', '/' %}
                 {% endif %}
+                {% assign zh_url = zh_url | replace: '-en/', '/' | replace: '-en.html', '.html' %}
                 <a class="nav-link" href="{{ zh_url | relative_url }}">中</a>
                 {% else %}
                 {% assign en_url = page.url %}
@@ -84,7 +90,7 @@
     {% if site.avatar and page.show-avatar != false %}
     <div class="avatar-container">
         <div class="avatar-img-border">
-            <a href="{{ '/' | absolute_url }}">
+            <a href="{{ home_url | relative_url }}">
                 <img alt="Navigation bar avatar" class="avatar-img" src="{{ site.avatar | relative_url }}" />
             </a>
         </div>
