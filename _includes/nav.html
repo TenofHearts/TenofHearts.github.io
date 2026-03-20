@@ -1,8 +1,10 @@
 <nav
     class="navbar navbar-expand-xl navbar-light fixed-top navbar-custom {% if page.nav-short %}top-nav-short-permanent{% else %}top-nav-regular{% endif %}">
 
+    {% assign current_lang = page.lang | default: site.active_lang %}
+
     {% assign home_url = '/' %}
-    {% if site.active_lang == 'en' %}
+    {% if current_lang == 'en' %}
     {% assign home_url = '/en/' %}
     {% endif %}
 
@@ -11,7 +13,7 @@
             src="{{ site.title-img | relative_url}}" /></a>
     {%- elsif site.title -%}
     {% assign blog_title = site.title %}
-    {% if site.active_lang == "en" and site.title-en %}
+    {% if current_lang == "en" and site.title-en %}
     {% assign blog_title = site.title-en %}
     {% endif %}
     <a class="navbar-brand" href="{{ home_url | relative_url }}">{{ blog_title }}</a>
@@ -25,7 +27,7 @@
     <div class="collapse navbar-collapse" id="main-navbar">
         <ul class="navbar-nav ml-auto">
             {% assign navbar_links = site.navbar-links %}
-            {% if site.active_lang == "en" and site.navbar-links-en %}
+            {% if current_lang == "en" and site.navbar-links-en %}
             {% assign navbar_links = site.navbar-links-en %}
             {% endif %}
             {%- for link in navbar_links -%}
@@ -49,7 +51,7 @@
             {%- endfor -%}
 
             <li class="nav-item">
-                {% if site.active_lang == "en" %}
+                {% if current_lang == "en" %}
                 {% assign zh_url = page.url %}
                 {% if zh_url == '/en' or zh_url == '/en/' %}
                 {% assign zh_url = '/' %}
@@ -83,13 +85,14 @@
                 <a class="nav-link" href="{{ site.baseurl | default: '' }}{{ en_url }}">EN</a>
                 {% endif %}
             </li>
-            <span id="lang-debug" style="display:none;">active_lang={{ site.active_lang }}|baseurl={{ site.baseurl |
+            <span id="lang-debug" style="display:none;">active_lang={{ site.active_lang }}|current_lang={{ current_lang
+                }}|baseurl={{ site.baseurl |
                 default: '' }}|page.url={{ page.url }}|page.path={{ page.path }}|target={{ lang_debug_target }}</span>
             {% if site.post_search %}
             <li class="nav-item">
                 <a class="nav-link" id="nav-search-link" href="#" title="Search">
                     <span id="nav-search-icon" class="fa fa-search"></span>
-                    <span id="nav-search-text">{% if site.active_lang == "en" %}Search{% else %}搜索{% endif %}</span>
+                    <span id="nav-search-text">{% if current_lang == "en" %}Search{% else %}搜索{% endif %}</span>
                 </a>
             </li>
             {%- endif -%}
