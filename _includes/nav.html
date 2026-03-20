@@ -57,6 +57,7 @@
                 {% assign zh_url = zh_url | replace_first: '/en/', '/' %}
                 {% endif %}
                 {% assign zh_url = zh_url | replace: '-en/', '/' | replace: '-en.html', '.html' %}
+                {% assign lang_debug_target = zh_url %}
                 <a class="nav-link" href="{{ site.baseurl | default: '' }}{{ zh_url }}">中</a>
                 {% else %}
                 {% assign en_url = page.url %}
@@ -78,9 +79,12 @@
                 {% assign en_url = '/en' | append: en_url %}
                 {% endif %}
                 {% endif %}
+                {% assign lang_debug_target = en_url %}
                 <a class="nav-link" href="{{ site.baseurl | default: '' }}{{ en_url }}">EN</a>
                 {% endif %}
             </li>
+            <span id="lang-debug" style="display:none;">active_lang={{ site.active_lang }}|baseurl={{ site.baseurl |
+                default: '' }}|page.url={{ page.url }}|page.path={{ page.path }}|target={{ lang_debug_target }}</span>
             {% if site.post_search %}
             <li class="nav-item">
                 <a class="nav-link" id="nav-search-link" href="#" title="Search">
