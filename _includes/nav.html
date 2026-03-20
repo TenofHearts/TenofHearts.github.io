@@ -57,7 +57,7 @@
                 {% assign zh_url = zh_url | replace_first: '/en/', '/' %}
                 {% endif %}
                 {% assign zh_url = zh_url | replace: '-en/', '/' | replace: '-en.html', '.html' %}
-                <a class="nav-link" href="{{ zh_url | relative_url }}">中</a>
+                <a class="nav-link" href="{{ site.baseurl | default: '' }}{{ zh_url }}">中</a>
                 {% else %}
                 {% assign en_url = page.url %}
                 {% if en_url == '/' %}
@@ -78,7 +78,7 @@
                 {% assign en_url = '/en' | append: en_url %}
                 {% endif %}
                 {% endif %}
-                <a class="nav-link" href="{{ en_url | relative_url }}">EN</a>
+                <a class="nav-link" href="{{ site.baseurl | default: '' }}{{ en_url }}">EN</a>
                 {% endif %}
             </li>
             {% if site.post_search %}
