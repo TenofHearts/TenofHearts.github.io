@@ -38,7 +38,7 @@ $$\sum_{t=1}^{T} f_{i_t}^t$$
 
 Wanting to guarantee that we choose the expert who performs best **on that day** every day is obviously unrealistic ~~(unless of course you can tell fortunes)~~.
 
-> The expected total loss $\mathcal{F}_{{\text{total}}}\le \sum_{t=1}^T \min_{i \in [n]} f_i^t$ is unrealistic.
+> The expected total loss $\mathcal{F}_{\{\text{total}\}}\le \sum_{t=1}^T \min_{i \in [n]} f_i^t$ is unrealistic.
 
 Therefore, we set a **relative goal**: after $T$ days are over, looking back, if we had stubbornly followed **a single best-performing expert** from the beginning, what would our loss be? The difference between our loss and the loss of this "best expert" is called **Regret**:
 

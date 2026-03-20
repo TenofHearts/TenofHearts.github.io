@@ -100,7 +100,7 @@ layout: page
     {% comment %}计算该分类下的文章数量{% endcomment %}
     {% assign category_posts = site.posts | where_exp: "post", "post.path contains info_page.category_name" %}
     {% if site.active_lang == "en" %}
-    {% assign category_posts = category_posts | where_exp: "post", "post.lang == 'en' or post.path contains '-en.'" %}
+    {% assign category_posts = category_posts | where: "lang", "en" %}
     {% else %}
     {% assign category_posts = category_posts | where_exp: "post", "post.lang != 'en'" %}
     {% endif %}

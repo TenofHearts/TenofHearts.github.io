@@ -103,7 +103,7 @@ layout: base
             | where_exp: "post", "post.path contains current_category"
             | sort: "date" %}
             {% if site.active_lang == "en" %}
-            {% assign category_posts = category_posts | where_exp: "post", "post.lang == 'en' or post.path contains '-en.'" %}
+            {% assign category_posts = category_posts | where: "lang", "en" %}
             {% else %}
             {% assign category_posts = category_posts | where_exp: "post", "post.lang != 'en'" %}
             {% endif %}
