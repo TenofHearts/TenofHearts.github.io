@@ -65,7 +65,18 @@
                 {% elsif en_url contains '/en/' %}
                 {% assign en_url = en_url %}
                 {% else %}
+                {% if page.path contains '_posts/' and page.path contains '-en.' == false %}
+                {% assign en_path = page.path | replace: '.md', '-en.md' %}
+                {% assign en_post = site.posts | where: 'path', en_path | first %}
+                {% if en_post %}
+                {% assign en_url = en_post.url %}
+                {% endif %}
+                {% endif %}
+                {% if en_url contains '/en/' %}
+                {% assign en_url = en_url %}
+                {% else %}
                 {% assign en_url = '/en' | append: en_url %}
+                {% endif %}
                 {% endif %}
                 <a class="nav-link" href="{{ en_url | relative_url }}">EN</a>
                 {% endif %}
