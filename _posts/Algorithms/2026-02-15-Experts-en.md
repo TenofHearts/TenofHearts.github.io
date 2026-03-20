@@ -8,6 +8,7 @@ title: Magical Algorithms 04 -- The Experts Problem
 tags: [learning, cs]
 author: ten of hearts
 mathjax: true
+lang: en
 ---
 
 Today, I want to introduce a problem full of **uncertainty** and **gaming**: **Online Learning**.

@@ -8,6 +8,7 @@ title: Magical Algorithms 02 -- Compression
 tags: [learning, cs]
 author: ten of hearts
 mathjax: true
+lang: en
 ---
 
 Today, we are going to discuss a very common and interesting algorithm: compression. I believe everyone has encountered compressed archives more or less when downloading resources, but I wonder if you have ever thought about how they work? Why can a relatively **small** compressed file be converted into the original **large** file without any **loss** in the large file? In this article, I will explain the basic principles of compression algorithms and discuss some parts of compression theory that I find very interesting.

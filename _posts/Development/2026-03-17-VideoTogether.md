@@ -8,6 +8,7 @@ title: VideoTogether -- 一起看电影吧~
 tags: [work, cs]
 author: ten of hearts
 mathjax: true
+lang: zh
 ---
 
 最近我迷上了[绝命毒师](https://www.netflix.com/sg-zh/title/70143836), 并且成功带着女朋友入坑. 不幸的是, 我们并不在同一座城市上大学, 因此很多时候只能在线上一起追剧. 像任何一个正常人一样, 我的第一选择是腾讯会议的投屏功能. 然而, 这个解决方案并不令人满意: 

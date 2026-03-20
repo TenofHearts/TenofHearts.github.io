@@ -4,6 +4,7 @@ title: VideoTogether -- Watch Movies Together!
 tags: [work, cs]
 author: ten of hearts
 mathjax: true
+lang: en
 ---
 
 Recently, I got obsessed with [Breaking Bad](https://www.netflix.com/sg-zh/title/70143836) and successfully got my girlfriend hooked too. Unfortunately, we don't go to college in the same city, so most of the time we can only binge-watch online together. Like any normal person, my first choice was the screen sharing feature of Tencent Meeting. However, this solution was not satisfactory: 
