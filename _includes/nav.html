@@ -45,16 +45,24 @@
 
             <li class="nav-item">
                 {% if site.active_lang == "en" %}
-                {% assign zh_url = page.url | replace_first: '/en/', '/' %}
-                {% if zh_url == page.url %}
-                {% assign zh_url = page.url | replace_first: '/en', '' %}
-                {% endif %}
-                {% if zh_url == '' %}
+                {% assign zh_url = page.url %}
+                {% if zh_url == '/en' or zh_url == '/en/' %}
                 {% assign zh_url = '/' %}
+                {% elsif zh_url contains '/en/' %}
+                {% assign zh_url = zh_url | replace_first: '/en/', '/' %}
                 {% endif %}
-                <a class="nav-link" href="{{ site.baseurl | default: '' }}{{ zh_url }}">中</a>
+                <a class="nav-link" href="{{ zh_url | relative_url }}">中</a>
                 {% else %}
-                <a class="nav-link" href="{{ site.baseurl | default: '' }}/en{{ page.url }}">EN</a> {% endif %}
+                {% assign en_url = page.url %}
+                {% if en_url == '/' %}
+                {% assign en_url = '/en/' %}
+                {% elsif en_url contains '/en/' %}
+                {% assign en_url = en_url %}
+                {% else %}
+                {% assign en_url = '/en' | append: en_url %}
+                {% endif %}
+                <a class="nav-link" href="{{ en_url | relative_url }}">EN</a>
+                {% endif %}
             </li>
             {% if site.post_search %}
             <li class="nav-item">

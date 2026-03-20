@@ -102,6 +102,11 @@ layout: base
             {% assign category_posts = site.posts
             | where_exp: "post", "post.path contains current_category"
             | sort: "date" %}
+            {% if site.active_lang == "en" %}
+            {% assign category_posts = category_posts | where_exp: "post", "post.lang == 'en' or post.path contains '-en.'" %}
+            {% else %}
+            {% assign category_posts = category_posts | where_exp: "post", "post.lang != 'en'" %}
+            {% endif %}
 
             {% comment %}找到当前文章在category中的位置{% endcomment %}
             {% assign current_index = -1 %}

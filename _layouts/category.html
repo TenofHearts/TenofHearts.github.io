@@ -160,8 +160,13 @@ layout: page
     {% endif %}
 </div>
 
-{% assign category_posts = site.posts | where_exp: "post", "post.path contains page.category_name" | sort: "date" |
-reverse %}
+{% assign category_posts = site.posts | where_exp: "post", "post.path contains page.category_name" %}
+{% if site.active_lang == "en" %}
+{% assign category_posts = category_posts | where_exp: "post", "post.lang == 'en' or post.path contains '-en.'" %}
+{% else %}
+{% assign category_posts = category_posts | where_exp: "post", "post.lang != 'en'" %}
+{% endif %}
+{% assign category_posts = category_posts | sort: "date" | reverse %}
 
 <ul class="posts-list list-unstyled" role="list">
     {% for post in category_posts %}
