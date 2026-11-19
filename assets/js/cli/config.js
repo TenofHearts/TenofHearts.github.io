@@ -15,6 +15,7 @@ export const cliConfig = {
     find: 'find',
     read: 'read',
     gui: 'gui',
+    lang: 'lang',
     pwd: 'pwd',
     about: 'about',
     clear: 'clear',

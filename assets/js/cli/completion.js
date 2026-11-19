@@ -1,4 +1,4 @@
-export function createCompletion({ input, commands, posts, getPath }) {
+export function createCompletion({ input, commands, languages, posts, getPath }) {
   const commandNames = Object.values(commands);
 
   function complete() {
@@ -12,6 +12,10 @@ export function createCompletion({ input, commands, posts, getPath }) {
     }
 
     const command = parts[0];
+    if (command === commands.lang && parts.length === 2) {
+      const matches = languages.filter(lang => lang.startsWith(parts[1]));
+      return replace(matches, parts[1].length, matches, parts[1]);
+    }
     if (!['cd', 'ls', 'read'].includes(command)) return;
     const argument = parts.slice(1).join(' ');
     const slash = argument.lastIndexOf('/');

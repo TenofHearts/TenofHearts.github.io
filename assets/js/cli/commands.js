@@ -1,8 +1,9 @@
 import { renderCategoryList, renderPostList } from './posts.js';
 import { CliPath } from './path.js';
 
-export function createCommandRunner({ commands, posts, reader, about, terminal, guiUrl }) {
-  let currentPath = new CliPath();
+export function createCommandRunner({ commands, posts, reader, about, terminal, guiUrl, language, languageUrls, switchLanguage, initialPath }) {
+  let currentPath = initialPath && posts.category(initialPath.category || '') ? initialPath : new CliPath();
+  terminal.setWorkingDirectory(currentPath.toString());
 
   function run(line) {
     const [command, ...words] = line.trim().split(/\s+/);
@@ -13,7 +14,12 @@ export function createCommandRunner({ commands, posts, reader, about, terminal, 
     if (command === commands.list) return list(argument);
     if (command === commands.cd) return changeDirectory(argument);
     if (command === commands.gui) return location.assign(guiUrl);
-    if (command === commands.help) return terminal.appendHelp(commands);
+    if (command === commands.lang) {
+      if (!argument || argument === language) return terminal.appendText(language);
+      if (!Object.hasOwn(languageUrls, argument)) return terminal.appendText('Usage: lang [zh|en]');
+      return switchLanguage(argument, currentPath);
+    }
+    if (command === commands.help) return terminal.appendHelp(commands, language);
     if (command === commands.pwd) return terminal.appendText(currentPath.toString());
     if (command === commands.about) return terminal.append(about());
     if (command === commands.find && argument) {

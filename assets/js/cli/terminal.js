@@ -2,16 +2,16 @@ export function createTerminal(root, selectors) {
   const transcript = root.querySelector(selectors.transcript);
   const prompt = root.querySelector(selectors.prompt);
   const input = root.querySelector(selectors.input);
-  let workingDirectory = '~/journal';
+  const label = prompt.querySelector('label');
 
   function setWorkingDirectory(path) {
-    workingDirectory = path;
+    label.textContent = `guest@blog:${path}$`;
   }
 
   function appendCommand(command) {
     const line = document.createElement('p');
     line.className = 'cli-command-line';
-    line.textContent = `guest@blog:${workingDirectory}$ ${command}`;
+    line.textContent = `${label.textContent} ${command}`;
     transcript.append(line);
     line.scrollIntoView({ block: 'nearest' });
   }
@@ -64,19 +64,20 @@ export function createTerminal(root, selectors) {
     output.scrollIntoView({ block: 'nearest' });
   }
 
-  function appendHelp(commands) {
+  function appendHelp(commands, language) {
     const entries = [
-      [`${commands.list} [category]`, 'list directories or posts'],
-      [`${commands.cd} <dir>`, 'change category'],
-      [`${commands.find} <text>`, 'search posts'],
-      [`${commands.read} <post>`, 'read a post'],
-      [commands.pwd, 'show the current directory'],
-      [commands.about, 'show blog information'],
-      [commands.clear, 'clear the terminal'],
-      [commands.gui, 'open GUI mode']
+      [`${commands.list} [category]`, 'list directories or posts', '列出目录或文章'],
+      [`${commands.cd} <dir>`, 'change category', '切换分类目录'],
+      [`${commands.find} <text>`, 'search posts', '搜索文章'],
+      [`${commands.read} <post>`, 'read a post', '阅读文章'],
+      [commands.pwd, 'show the current directory', '显示当前目录'],
+      [commands.about, 'show blog information', '查看作者简介'],
+      [commands.clear, 'clear the terminal', '清空终端'],
+      [`${commands.lang} [zh|en]`, 'show or switch the content language', '查看或切换内容语言'],
+      [commands.gui, 'open GUI mode', '切换到图形界面']
     ];
     const width = Math.max(...entries.map(([command]) => command.length));
-    appendText(entries.map(([command, description]) => `${command.padEnd(width + 3)}${description}`).join('\n'));
+    appendText(entries.map(([command, en, zh]) => `${command.padEnd(width + 3)}${language === 'zh' ? zh : en}`).join('\n'));
   }
 
   function clear() {

@@ -1,9 +1,9 @@
-<main class="cli-shell" data-cli-root data-cli-gui-url="{% if site.active_lang == 'en' %}{{ '/en/gui/' | relative_url }}{% else %}{{ '/gui/' | relative_url }}{% endif %}" data-cli-about-title="{{ include.about.title | escape }}" data-cli-about-url="{% if site.active_lang == 'en' %}{{ '/en/aboutme/' | relative_url }}{% else %}{{ '/aboutme/' | relative_url }}{% endif %}">
-  {% include cli/navigation.html %}
-  <h1 class="cli-brand"><span aria-hidden="true">♥</span> Ten of Hearts</h1>
+<main class="cli-shell" data-cli-root
+  data-cli-zh-url="{{ '/cli/' | relative_url }}" data-cli-en-url="{{ '/en/cli/' | relative_url }}"
+  data-cli-gui-url="{% if site.active_lang == 'en' %}{{ '/en/gui/' | relative_url }}{% else %}{{ '/gui/' | relative_url }}{% endif %}" data-cli-about-title="{{ include.about.title | escape }}" data-cli-about-url="{% if site.active_lang == 'en' %}{{ '/en/aboutme/' | relative_url }}{% else %}{{ '/aboutme/' | relative_url }}{% endif %}">
   <section class="cli-terminal" data-cli-terminal aria-label="Blog terminal">
     <div class="cli-transcript" data-cli-transcript aria-live="polite">
-      <p class="cli-banner"># Ten of Hearts Blog</p>
+      {% include cli/banner.html subtitle=include.subtitle %}
     </div>
     {% include cli/command-prompt.html %}
   </section>

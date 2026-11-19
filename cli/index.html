@@ -4,6 +4,7 @@ permalink: /cli/
 title: Blog terminal
 ---
 {% assign posts = site.posts | where: 'lang', site.active_lang %}
+{% assign home = site.pages | where: 'permalink', '/gui/' | where: 'lang', site.active_lang | first %}
 {% assign about_filename = 'aboutme.zh.md' %}
 {% if site.active_lang == 'en' %}{% assign about_filename = 'aboutme.en.md' %}{% endif %}
 {% assign about_page = site.pages | where: 'path', about_filename | first %}
@@ -16,7 +17,7 @@ title: Blog terminal
   <link rel="stylesheet" href="{{ '/assets/css/cli.css' | relative_url }}">
 </head>
 <body class="cli-page">
-  {% include cli/shell.html posts=posts about=about_page %}
+  {% include cli/shell.html posts=posts about=about_page subtitle=home.subtitle %}
   <script type="module" src="{{ '/assets/js/cli/index.js' | relative_url }}"></script>
 </body>
 </html>

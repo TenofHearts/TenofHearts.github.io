@@ -17,10 +17,10 @@
 html, body { min-height: 100%; margin: 0; background: var(--cli-background); }
 .cli-page { min-height: 100vh; background: var(--cli-background); }
 .cli-shell { min-height: 100vh; box-sizing: border-box; padding: 1.25rem 2rem 4rem; overflow-wrap: anywhere; }
-.cli-navigation, .cli-prompt { display: flex; align-items: center; gap: .75rem; }
-.cli-navigation { justify-content: space-between; border-bottom: 1px solid var(--cli-border); padding-bottom: .65rem; color: var(--cli-subtle); }
-.cli-brand { font-size: 1.8rem; font-weight: 500; margin: 1.5rem 0 1rem; }
-.cli-brand span { color: var(--cli-heart); }
+.cli-prompt { display: flex; align-items: center; gap: .75rem; }
+.cli-brand { display: flex; flex-wrap: wrap; gap: 1em 5ch; color: var(--cli-accent); font: bold .8rem/1 monospace; margin: 0 0 1rem; }
+.cli-brand span { white-space: pre; }
+.cli-banner p { margin: .25rem 0 0; }
 .cli-shell a, .cli-shell button, .cli-shell label { color: var(--cli-accent); }
 .cli-shell a { text-underline-offset: .22em; }
 .cli-terminal { background: var(--cli-background); }

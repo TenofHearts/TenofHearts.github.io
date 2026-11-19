@@ -209,6 +209,10 @@ img {
   letter-spacing: 0.0625rem;
 }
 
+@media (max-width: 767.98px) {
+  .navbar-custom .nav-cli-entry { display: none; }
+}
+
 .navbar-custom .navbar-nav .nav-link {
   line-height: 1.25rem;
   padding-top: 0.9375rem;

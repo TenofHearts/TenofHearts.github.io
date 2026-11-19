@@ -7,37 +7,55 @@ import { createCompletion } from './completion.js';
 
 const root = document.querySelector(cliConfig.selectors.root);
 const input = root.querySelector(cliConfig.selectors.input);
-const aboutTemplate = root.querySelector(cliConfig.selectors.aboutContent);
-const posts = createPostIndex(root, cliConfig.selectors);
 const terminal = createTerminal(root, cliConfig.selectors);
-const runner = createCommandRunner({
-  commands: cliConfig.commands,
-  posts,
-  reader: post => renderPost(post),
-  about: () => renderAbout(root.dataset.cliAboutTitle, aboutTemplate, root.dataset.cliAboutUrl),
-  terminal,
-  guiUrl: root.dataset.cliGuiUrl
-});
-const completion = createCompletion({
-  input,
-  commands: cliConfig.commands,
-  posts,
-  getPath: runner.getPath
-});
+const languageUrls = { zh: root.dataset.cliZhUrl, en: root.dataset.cliEnUrl };
+let runner, completion;
+
+function useEdition(edition, language, initialPath) {
+  const posts = createPostIndex(edition, cliConfig.selectors);
+  const aboutTemplate = edition.querySelector(cliConfig.selectors.aboutContent);
+  runner = createCommandRunner({
+    commands: cliConfig.commands, posts, reader: renderPost, terminal,
+    about: () => renderAbout(edition.dataset.cliAboutTitle, aboutTemplate, new URL(edition.dataset.cliAboutUrl, document.baseURI)),
+    guiUrl: edition.dataset.cliGuiUrl, language, languageUrls, switchLanguage, initialPath
+  });
+  completion = createCompletion({ input, languages: Object.keys(languageUrls), commands: cliConfig.commands, posts, getPath: runner.getPath });
+}
+
+async function switchLanguage(language, currentPath) {
+  try {
+    const response = await fetch(languageUrls[language]);
+    if (!response.ok) throw new Error();
+    const page = new DOMParser().parseFromString(await response.text(), 'text/html');
+    const edition = page.querySelector(cliConfig.selectors.root);
+    if (!edition || page.documentElement.lang !== language) throw new Error();
+    useEdition(edition, language, currentPath);
+    window.history.replaceState(window.history.state, '', response.url);
+    document.documentElement.lang = language;
+    root.querySelector('.cli-banner')?.replaceWith(edition.querySelector('.cli-banner'));
+    terminal.appendText(language);
+  } catch {
+    terminal.appendText(`lang: could not load ${language}`);
+  }
+}
+useEdition(root, document.documentElement.lang);
 
 const form = root.querySelector(cliConfig.selectors.prompt);
 const history = [];
 let historyIndex = 0;
-form.onsubmit = event => {
+let busy = false;
+form.onsubmit = async event => {
   event.preventDefault();
+  if (busy) return;
   const command = input.value.trim();
+  input.value = '';
+  input.focus();
   if (command) {
     history.push(command);
     historyIndex = history.length;
-    runner.run(command);
+    busy = true;
+    try { await runner.run(command); } finally { busy = false; }
   }
-  input.value = '';
-  input.focus();
 };
 input.onkeydown = event => {
   if (event.key === 'Tab') {
