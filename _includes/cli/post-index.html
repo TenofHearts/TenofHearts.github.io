@@ -1,0 +1,8 @@
+<ol class="cli-post-index" data-cli-index hidden>
+  {% for post in include.posts %}
+  <li data-cli-post data-cli-category="{{ post.cli_category | escape }}" data-cli-name="{{ post.cli_name | escape }}" data-cli-content-url="{{ post.cli_content_url | relative_url }}" data-cli-source-url="{{ post.cli_source_url | relative_url }}">
+    <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%Y-%m-%d' }}</time>
+    <a data-cli-post-link href="{{ post.url | relative_url }}">{{ post.title | escape }}</a>
+  </li>
+  {% endfor %}
+</ol>

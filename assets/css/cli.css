@@ -1,0 +1,58 @@
+:root {
+  --cli-background: #0b0d0c;
+  --cli-surface: #111513;
+  --cli-foreground: #e2e8df;
+  --cli-muted: #8e9b91;
+  --cli-subtle: #b6c2b8;
+  --cli-border: #344238;
+  --cli-accent: #a7e6b8;
+  --cli-command: #f4df9b;
+  --cli-heart: #ff8b84;
+  --cli-code-background: #171d19;
+  color-scheme: dark;
+  background: var(--cli-background);
+  color: var(--cli-foreground);
+  font: 15px/1.65 ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+html, body { min-height: 100%; margin: 0; background: var(--cli-background); }
+.cli-page { min-height: 100vh; background: var(--cli-background); }
+.cli-shell { min-height: 100vh; box-sizing: border-box; padding: 1.25rem 2rem 4rem; overflow-wrap: anywhere; }
+.cli-navigation, .cli-prompt { display: flex; align-items: center; gap: .75rem; }
+.cli-navigation { justify-content: space-between; border-bottom: 1px solid var(--cli-border); padding-bottom: .65rem; color: var(--cli-subtle); }
+.cli-brand { font-size: 1.8rem; font-weight: 500; margin: 1.5rem 0 1rem; }
+.cli-brand span { color: var(--cli-heart); }
+.cli-shell a, .cli-shell button, .cli-shell label { color: var(--cli-accent); }
+.cli-shell a { text-underline-offset: .22em; }
+.cli-terminal { background: var(--cli-background); }
+.cli-transcript { min-height: 0; }
+.cli-banner { color: var(--cli-subtle); margin: 0 0 1.25rem; }
+.cli-prompt { position: sticky; bottom: 0; padding-top: .2rem; margin-top: 0; background: var(--cli-background); }
+.cli-prompt input, .cli-prompt button { font: inherit; background: transparent; }
+.cli-prompt input { min-width: 0; flex: 1; color: var(--cli-foreground); border: 0; outline: none; caret-color: var(--cli-accent); }
+.cli-prompt button { cursor: pointer; border: 0; padding: 0 .2rem; }
+.cli-command-line { color: var(--cli-command); margin: .8rem 0 .2rem; white-space: pre-wrap; }
+.cli-command-output { margin: 0 0 1rem; }
+.cli-text-output { color: var(--cli-subtle); white-space: pre-wrap; font: inherit; }
+.cli-page ul { list-style: none; padding-left: 0; }
+.cli-directory-list { list-style: none; padding: 0; margin: .2rem 0 1rem; }
+.cli-directory-list li { padding: .15rem 0; }
+.cli-post-list { padding-left: 0; list-style: none; margin: .2rem 0 1rem; }
+.cli-post-list li { padding: .15rem 0; }
+.cli-post-number { color: var(--cli-muted); display: inline-block; min-width: 4ch; }
+.cli-post-list time { color: var(--cli-muted); font-size: .85rem; margin-right: .7rem; }
+.cli-pager { position: fixed; inset: 0; z-index: 10; box-sizing: border-box; overflow-y: auto; overscroll-behavior: contain; padding: 2rem 3rem 4rem; margin: 0; outline: none; background: var(--cli-background); scrollbar-width: none; }
+.cli-pager::-webkit-scrollbar { display: none; }
+.cli-pager h2 { font-size: 1.25rem; font-weight: 500; margin-top: 0; }
+.cli-pager-body { overflow-x: auto; }
+.cli-pager pre { overflow-x: auto; padding: 1rem; background: var(--cli-code-background); }
+.cli-pager img { max-width: 100%; height: auto; }
+.cli-pager-end { color: var(--cli-muted); margin-bottom: 0; }
+.cli-pager-status { position: fixed; left: 3rem; right: 3rem; bottom: .75rem; margin: 0; color: var(--cli-foreground); background: var(--cli-background); }
+[hidden] { display: none; }
+@media (max-width: 600px) {
+  .cli-shell { padding: 1rem .75rem 3rem; }
+  .cli-prompt { align-items: flex-start; }
+  .cli-prompt label { white-space: nowrap; }
+  .cli-pager { padding: 1rem .75rem 4rem; }
+  .cli-pager-status { left: .75rem; right: .75rem; }
+}

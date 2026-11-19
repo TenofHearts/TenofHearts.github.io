@@ -1,0 +1,22 @@
+---
+layout: null
+permalink: /cli/
+title: Blog terminal
+---
+{% assign posts = site.posts | where: 'lang', site.active_lang %}
+{% assign about_filename = 'aboutme.zh.md' %}
+{% if site.active_lang == 'en' %}{% assign about_filename = 'aboutme.en.md' %}{% endif %}
+{% assign about_page = site.pages | where: 'path', about_filename | first %}
+<!doctype html>
+<html lang="{{ site.active_lang }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ten of Hearts | CLI</title>
+  <link rel="stylesheet" href="{{ '/assets/css/cli.css' | relative_url }}">
+</head>
+<body class="cli-page">
+  {% include cli/shell.html posts=posts about=about_page %}
+  <script type="module" src="{{ '/assets/js/cli/index.js' | relative_url }}"></script>
+</body>
+</html>
