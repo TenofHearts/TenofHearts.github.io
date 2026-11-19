@@ -2,7 +2,7 @@
 layout: base
 ---
 
-{% include header.html type="post" %}
+{% include gui/header.html type="post" %}
 
 <style>
     .back-link {
@@ -99,7 +99,7 @@ layout: base
             {% endif %}
 
             {% if page.social-share %}
-            {% include social-share.html %}
+            {% include gui/social-share.html %}
             {% endif %}
 
             {% comment %}获取同一category下的所有文章并按日期排序{% endcomment %}
@@ -152,7 +152,7 @@ layout: base
                     </li>
                     {% endif %}
                 </ul>
-                {% include comments.html %}
+                {% include gui/comments.html %}
         </div>
     </div>
 </main>

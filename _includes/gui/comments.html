@@ -1,0 +1,8 @@
+{% if page.comments %}
+  {% include gui/disqus.html %}
+  {% include gui/fb-comment.html %}
+  {% include gui/staticman-comments.html %}
+  {% include gui/utterances-comment.html %}
+  {% include gui/giscus-comment.html %}
+  {% include gui/commentbox.html %}
+{% endif %}

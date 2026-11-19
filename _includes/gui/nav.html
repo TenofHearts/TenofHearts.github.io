@@ -7,14 +7,14 @@
     {% assign current_lang = 'en' %}
     {% endif %}
 
-    {% assign home_url = '/' %}
+    {% assign home_url = '/gui/' %}
     {% if current_lang == 'en' %}
-    {% assign home_url = '/en/' %}
+    {% assign home_url = '/en/gui/' %}
     {% endif %}
 
     {%- if site.title-img -%}
     <a class="navbar-brand navbar-brand-logo" href="{{ site.baseurl | default: '' }}{{ home_url }}"
-        data-switch-url="{{ home_url }}"
+        data-switch-url="{{ home_url | relative_url }}"
         onclick="window.location.href=this.getAttribute('data-switch-url'); return false;"><img
             alt="{{ site.title }} Logo" src="{{ site.title-img | relative_url}}" /></a>
     {%- elsif site.title -%}
@@ -22,7 +22,7 @@
     {% if current_lang == "en" and site.title-en %}
     {% assign blog_title = site.title-en %}
     {% endif %}
-    <a class="navbar-brand" href="{{ site.baseurl | default: '' }}{{ home_url }}" data-switch-url="{{ home_url }}"
+    <a class="navbar-brand" href="{{ home_url | relative_url }}" data-switch-url="{{ home_url | relative_url }}"
         onclick="window.location.href=this.getAttribute('data-switch-url'); return false;">{{ blog_title }}</a>
     {%- endif -%}
 
@@ -57,21 +57,29 @@
             {%- endif -%}
             {%- endfor -%}
 
+            {% assign cli_url = '/cli/' %}
+            {% if current_lang == 'en' %}
+            {% assign cli_url = '/en/cli/' %}
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ cli_url | relative_url }}">CLI</a>
+            </li>
+
             <li class="nav-item">
                 {% if current_lang == "en" %}
                 {% assign zh_url = page.url %}
                 {% if zh_url == '/en' or zh_url == '/en/' %}
-                {% assign zh_url = '/' %}
+                {% assign zh_url = '/gui/' %}
                 {% elsif zh_url contains '/en/' %}
                 {% assign zh_url = zh_url | replace_first: '/en/', '/' %}
                 {% endif %}
                 {% assign zh_url = zh_url | replace: '-en/', '/' | replace: '-en.html', '.html' %}
-                <a class="nav-link" href="{{ site.baseurl | default: '' }}{{ zh_url }}" data-switch-url="{{ zh_url }}"
+                <a class="nav-link" href="{{ zh_url | relative_url }}" data-switch-url="{{ zh_url | relative_url }}"
                     onclick="window.location.href=this.getAttribute('data-switch-url'); return false;">中</a>
                 {% else %}
                 {% assign en_url = page.url %}
-                {% if en_url == '/' %}
-                {% assign en_url = '/en/' %}
+                {% if en_url == '/' or en_url == '/gui/' %}
+                {% assign en_url = '/en/gui/' %}
                 {% else %}
                 {% if page.path contains '_posts/' %}
                 {% unless page.path contains '-en.' %}
@@ -84,7 +92,7 @@
                 {% assign en_url = '/en' | append: en_url %}
                 {% endunless %}
                 {% endif %}
-                <a class="nav-link" href="{{ site.baseurl | default: '' }}{{ en_url }}" data-switch-url="{{ en_url }}"
+                <a class="nav-link" href="{{ en_url | relative_url }}" data-switch-url="{{ en_url | relative_url }}"
                     onclick="window.location.href=this.getAttribute('data-switch-url'); return false;">EN</a>
                 {% endif %}
             </li>
@@ -108,7 +116,7 @@
     {% if site.avatar and page.show-avatar != false %}
     <div class="avatar-container">
         <div class="avatar-img-border">
-            <a href="{{ site.baseurl | default: '' }}{{ home_url }}" data-switch-url="{{ home_url }}"
+            <a href="{{ home_url | relative_url }}" data-switch-url="{{ home_url | relative_url }}"
                 onclick="window.location.href=this.getAttribute('data-switch-url'); return false;">
                 <img alt="Navigation bar avatar" class="avatar-img" src="{{ site.avatar | relative_url }}" />
             </a>
@@ -118,4 +126,4 @@
 
 </nav>
 
-{% include search.html %}
+{% include gui/search.html %}

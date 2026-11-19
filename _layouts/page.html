@@ -2,7 +2,7 @@
 layout: base
 ---
 
-{% include header.html type="page" %}
+{% include gui/header.html type="page" %}
 
 <main class="{% if page.full-width %} container-fluid {% else %} container-md {% endif %}">
   <div class="row">
@@ -25,7 +25,7 @@ layout: base
         </div>
       {% endif %}
 
-      {% include comments.html %}
+      {% include gui/comments.html %}
     </div>
   </div>
 </main>

@@ -16,7 +16,7 @@ common-ext-js:
 <!DOCTYPE html>
 <html lang="{{ page.language | default: site.language | default: 'en' }}">
 
-  {% include head.html %}
+  {% include gui/head.html %}
 
   <body>
 
@@ -40,9 +40,9 @@ common-ext-js:
       {% endif %}
     </main>
 
-    {% include footer-minimal.html %}
+    {% include gui/footer-minimal.html %}
 
-    {% include footer-scripts.html %}
+    {% include gui/footer-scripts.html %}
 
   </body>
 </html>

@@ -21,14 +21,14 @@ author: Ten of Hearts
 ###############################################
 
 navbar-links:
-  关于我: "aboutme"
+  关于我: "/aboutme/"
   友情链接: 
       - byml: "https://blog.201407.xyz"
       - Jianuo Cao: "https://jianuocao.github.io/"
   作者主页: "https://tenofhearts.github.io"
 
 navbar-links-en:
-  About Me: "aboutme"
+  About Me: "/aboutme/"
   Friendly Links: 
       - byml: "https://blog.201407.xyz"
       - Jianuo Cao: "https://jianuocao.github.io/"
@@ -266,7 +266,7 @@ date_format: "%B %-d, %Y"
 #################################################################################
 
 # Output options (more information on Jekyll's site)
-timezone: "China/Beijing"
+timezone: "Asia/Shanghai"
 markdown: kramdown
 # markdown: CommonMarkGhPages
 highlighter: rouge
@@ -328,4 +328,3 @@ exclude_from_localization:
 
 # Beautiful Jekyll / Dean Attali
 # 2fc73a3a967e97599c9763d05e564189
-

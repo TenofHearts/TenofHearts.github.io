@@ -1,6 +1,6 @@
 {% if layout.common-ext-js %}
   {% for js in layout.common-ext-js %}
-    {% include ext-js.html js=js %}
+    {% include gui/ext-js.html js=js %}
   {% endfor %}
 {% endif %}
 
@@ -27,7 +27,7 @@
 
 {% if page.ext-js %}
   {% for js in page.ext-js %}
-    {% include ext-js.html js=js %}
+      {% include gui/ext-js.html js=js %}
   {% endfor %}
 {% endif %}
 

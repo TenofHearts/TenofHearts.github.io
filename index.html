@@ -1,0 +1,19 @@
+---
+layout: null
+lang: zh
+permalink: /
+---
+{% assign gui_url = '/gui/' %}
+{% if site.active_lang == 'en' %}{% assign gui_url = '/en/gui/' %}{% endif %}
+<!doctype html>
+<html lang="{{ site.active_lang }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="refresh" content="0; url={{ gui_url | relative_url }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ site.title }}</title>
+  </head>
+  <body>
+    <p><a href="{{ gui_url | relative_url }}">Open GUI mode</a></p>
+  </body>
+</html>
