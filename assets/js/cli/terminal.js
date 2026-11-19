@@ -27,52 +27,65 @@ export function createTerminal(root, selectors) {
     const pager = document.createElement('dialog');
     pager.className = 'cli-pager';
     pager.setAttribute('aria-label', 'less');
-    const end = document.createElement('p');
-    end.className = 'cli-pager-end';
-    end.textContent = '-- end --';
-    const quit = document.createElement('button');
-    quit.className = 'cli-pager-status';
-    quit.textContent = 'q';
-    quit.title = 'Quit (q)';
-    quit.setAttribute('aria-label', 'Quit pager');
-    pager.append(typeof output === 'string' ? textOutput(output) : output, end, quit);
+    const viewport = document.createElement('div');
+    viewport.className = 'cli-pager-viewport';
+    const content = typeof output === 'string' ? textOutput(output) : output;
+    viewport.append(content);
+    const status = document.createElement('button');
+    status.className = 'cli-pager-status';
+    status.title = 'Quit (q)';
+    pager.append(viewport, status);
     transcript.append(pager);
     prompt.hidden = true;
     pager.showModal();
     pager.focus();
+    function updateStatus() {
+      const atEnd = viewport.scrollHeight - viewport.clientHeight - viewport.scrollTop <= 1;
+      const marker = atEnd ? '(END)' : ':';
+      if (status.textContent === marker) return;
+      status.textContent = marker;
+      status.classList.toggle('at-end', atEnd);
+      status.setAttribute('aria-label', atEnd ? 'End of output. Quit pager' : 'More below. Quit pager');
+    }
+    viewport.onscroll = updateStatus;
+    const resize = new ResizeObserver(updateStatus);
+    resize.observe(viewport);
+    resize.observe(content);
+    updateStatus();
     function close() {
+      resize.disconnect();
       pager.close();
       pager.remove();
       prompt.hidden = false;
       input.focus();
     }
-    quit.onclick = close;
+    status.onclick = close;
     pager.oncancel = event => { event.preventDefault(); close(); };
     // Let listing links submit their command at the restored prompt.
     pager.onclick = event => { if (event.target.closest('[data-cli-command]')) close(); };
     pager.onkeydown = event => {
-      const page = pager.clientHeight * .85;
+      const page = viewport.clientHeight * .85;
       if (event.key === 'q' || event.key === 'Escape') {
         event.preventDefault();
         close();
       } else if (event.key === ' ' || event.key === 'PageDown') {
         event.preventDefault();
-        pager.scrollTop += page;
+        viewport.scrollTop += page;
       } else if (event.key === 'b' || event.key === 'PageUp') {
         event.preventDefault();
-        pager.scrollTop -= page;
+        viewport.scrollTop -= page;
       } else if (event.key === 'ArrowDown' || event.key === 'j') {
         event.preventDefault();
-        pager.scrollTop += 48;
+        viewport.scrollTop += 48;
       } else if (event.key === 'ArrowUp' || event.key === 'k') {
         event.preventDefault();
-        pager.scrollTop -= 48;
+        viewport.scrollTop -= 48;
       } else if (event.key === 'g' || event.key === 'Home') {
         event.preventDefault();
-        pager.scrollTop = 0;
+        viewport.scrollTop = 0;
       } else if (event.key === 'G' || event.key === 'End') {
         event.preventDefault();
-        pager.scrollTop = pager.scrollHeight;
+        viewport.scrollTop = viewport.scrollHeight;
       }
     };
   }
