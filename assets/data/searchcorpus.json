@@ -1,23 +1,29 @@
 ---
 layout: null
 ---
-[ 
-{% for post in site.posts %} 
-{ 
-"title"    : "{% if post.title != "" %}{{ post.title | strip_html | escape }}{% else %}{{ post.excerpt | strip_html | escape | strip }}{%endif%}", 
-"desc"     : "{% if post.title != "" %}{{ post.title | strip_html | escape }}{% else %}{{ post.excerpt | strip_html | escape | strip }}{%endif%}", 
-"category" : "{{ post.tags | join: ', ' }}", 
-"url"      : "{{ site.baseurl }}{{ post.url | escape }}", 
-"date"     : "{{ post.date | date: "%B %e, %Y" | default: "January 1, 1970" }}" 
-}, 
-{% endfor %} 
-{% for page in site.html_pages %}{% if page.title != "{title}" and page.title != "404 - Page not found" %} 
-{ 
-"title"    : "{% if page.title != "" %}{{ page.title | strip_html | escape }}{% else %}{{ page.excerpt | strip_html | escape | strip }}{% endif %}", 
-"desc"     : "{% if page.title != "" %}{{ page.title | strip_html | escape }}{% else %}{{ page.excerpt | strip_html | escape | strip }}{% endif %}", 
-"category" : "{% if page.tags %}{{ page.tags | join: ', ' }}{% else %}page{% endif %}", 
-"url"      : "{{ site.baseurl }}{{ page.url }}", 
-"date"     : "{{ page.date | date: '%B %e, %Y' | default: "January 1, 1970" }}" 
-}{% unless forloop.last %},{% endunless %} 
-{% endif %}{% endfor %} 
+[
+{% assign separator = '' %}
+{% for post in site.posts %}
+  {% assign title = post.title | default: post.excerpt | strip_html | strip | escape %}
+  {{ separator }}{
+    "title": {{ title | jsonify }},
+    "desc": {{ title | jsonify }},
+    "category": {{ post.tags | join: ', ' | jsonify }},
+    "url": {{ post.url | prepend: site.baseurl | escape | jsonify }},
+    "date": {{ post.date | date: '%B %e, %Y' | default: 'January 1, 1970' | jsonify }}
+  }
+  {% assign separator = ',' %}
+{% endfor %}
+{% for page in site.html_pages %}
+  {% if page.search == false or page.title == '{title}' or page.title == '404 - Page not found' %}{% continue %}{% endif %}
+  {% assign title = page.title | default: page.excerpt | strip_html | strip | escape %}
+  {{ separator }}{
+    "title": {{ title | jsonify }},
+    "desc": {{ title | jsonify }},
+    "category": {% if page.tags %}{{ page.tags | join: ', ' | jsonify }}{% else %}"page"{% endif %},
+    "url": {{ page.url | prepend: site.baseurl | jsonify }},
+    "date": {{ page.date | date: '%B %e, %Y' | default: 'January 1, 1970' | jsonify }}
+  }
+  {% assign separator = ',' %}
+{% endfor %}
 ]

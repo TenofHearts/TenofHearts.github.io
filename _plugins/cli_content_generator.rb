@@ -24,6 +24,8 @@ module Jekyll
 
         page = PageWithoutAFile.new(site, site.source, "cli/content/#{lang}/#{key}", 'index.html')
         page.data['layout'] = 'cli-content'
+        page.data['search'] = false
+        page.data['sitemap'] = false
         page.data['lang'] = lang
         page.data['permalink'] = content_url
         converter = site.find_converter_instance(Jekyll::Converters::Markdown)

@@ -58,9 +58,10 @@ form.onsubmit = async event => {
   }
 };
 input.onkeydown = event => {
-  if (event.key === 'Tab') {
-    event.preventDefault();
+  if (event.key === 'Tab' && !event.shiftKey && !event.ctrlKey && !event.altKey && !event.metaKey) {
+    const previous = input.value;
     completion.complete();
+    if (input.value !== previous) event.preventDefault();
   } else if (event.key === 'ArrowUp') {
     event.preventDefault();
     historyIndex = Math.max(0, historyIndex - 1);

@@ -4,6 +4,7 @@ import { parsePipeline } from './parse.js';
 
 export function createCommandRunner({ commands, posts, reader, about, terminal, guiUrl, language, languageUrls, switchLanguage, initialPath }) {
   let currentPath = initialPath && posts.category(initialPath.category || '') ? initialPath : new CliPath();
+  let numberedPosts = posts.inCategory(currentPath.category);
   terminal.setWorkingDirectory(currentPath.toString());
 
   async function run(line) {
@@ -38,16 +39,15 @@ export function createCommandRunner({ commands, posts, reader, about, terminal, 
     if (command === commands.about) return terminal.openPager(about());
     if (command === commands.find && argument) {
       const matches = posts.find(argument).filter(post => !currentPath.isCategory || post.category === currentPath.category);
-      return matches.length
-        ? write(renderPostList(matches, currentPath.category))
-        : terminal.appendText(`find: no posts matching "${argument}"`);
+      if (matches.length) return listPosts(matches, write);
+      numberedPosts = [];
+      return terminal.appendText(`find: no posts matching "${argument}"`);
     }
     const less = command === commands.less;
     if (less && !argument) return terminal.appendText('Missing filename ("less --help" for help)');
     if (less && argument === '--help') return terminal.appendText('Usage: less <post> or <command> | less');
     const name = less ? argument : source.join(' ');
-    const post = posts.resolve(currentPath.resolve(name)) || (/^\d+$/.test(name) && currentPath.isCategory &&
-      posts.at(posts.inCategory(currentPath.category), Number(name)));
+    const post = /^\d+$/.test(name) ? posts.at(numberedPosts, Number(name)) : posts.resolve(currentPath.resolve(name));
     if (!post) return terminal.appendText(less ? `${commands.less}: no such post: ${name}` : 'Unknown command or post. Type help.');
     try {
       const article = await reader(post);
@@ -57,14 +57,22 @@ export function createCommandRunner({ commands, posts, reader, about, terminal, 
     }
   }
 
+  function listPosts(entries, write) {
+    numberedPosts = entries;
+    return write(renderPostList(entries, currentPath.category));
+  }
+
   function list(argument, write) {
     const target = currentPath.resolve(argument || '.');
-    if (target.isRoot) return write(renderCategoryList(posts.categories()));
+    if (target.isRoot) {
+      numberedPosts = [];
+      return write(renderCategoryList(posts.categories()));
+    }
     if (!target.isCategory || !posts.category(target.category)) {
       return terminal.appendText(`ls: cannot access '${argument}': No such category`);
     }
     const category = posts.category(target.category);
-    return write(renderPostList(posts.inCategory(category), currentPath.category));
+    return listPosts(posts.inCategory(category), write);
   }
 
   function changeDirectory(argument) {
@@ -74,6 +82,7 @@ export function createCommandRunner({ commands, posts, reader, about, terminal, 
       return terminal.appendText(`cd: no such category: ${argument}`);
     }
     currentPath = path.isRoot ? new CliPath() : new CliPath([posts.category(path.category)]);
+    numberedPosts = posts.inCategory(currentPath.category);
     terminal.setWorkingDirectory(currentPath.toString());
     return;
   }

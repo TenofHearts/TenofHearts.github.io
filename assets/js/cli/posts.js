@@ -41,6 +41,10 @@ export function createPostIndex(root, selectors) {
   };
 }
 
+function commandPath(path) {
+  return path.replace(/[\s\\'"|]/g, '\\$&');
+}
+
 export function renderCategoryList(categories, document = globalThis.document) {
   const list = document.createElement('ul');
   list.className = 'cli-directory-list';
@@ -49,7 +53,7 @@ export function renderCategoryList(categories, document = globalThis.document) {
     const link = document.createElement('a');
     link.href = `#${category}`;
     link.textContent = `${category}/`;
-    link.dataset.cliCommand = `ls ${category}/`;
+    link.dataset.cliCommand = `ls ${commandPath(`/${category}/`)}`;
     item.append('drwxr-xr-x ', link);
     list.append(item);
   });
@@ -71,7 +75,7 @@ export function renderPostList(posts, category = null, document = globalThis.doc
     link.href = post.link.href;
     const path = category === post.category ? post.name : `${category ? '../' : ''}${post.category}/${post.name}`;
     link.textContent = path;
-    link.dataset.cliCommand = path;
+    link.dataset.cliCommand = commandPath(`/${post.category}/${post.name}`);
     item.append(number, ' ', date, ' ', link);
     list.append(item);
   });

@@ -1,3 +1,5 @@
+import { clearMath, typesetArticle } from './math.js';
+
 export function createTerminal(root, selectors) {
   const transcript = root.querySelector(selectors.transcript);
   const prompt = root.querySelector(selectors.prompt);
@@ -20,6 +22,7 @@ export function createTerminal(root, selectors) {
     if (typeof output === 'string') return appendText(output);
     output.classList.add('cli-command-output');
     transcript.append(output);
+    typesetArticle(output);
     output.scrollIntoView({ block: 'nearest' });
   }
 
@@ -38,6 +41,7 @@ export function createTerminal(root, selectors) {
     transcript.append(pager);
     prompt.hidden = true;
     pager.showModal();
+    typesetArticle(content);
     pager.focus();
     function updateStatus() {
       const atEnd = viewport.scrollHeight - viewport.clientHeight - viewport.scrollTop <= 1;
@@ -54,6 +58,7 @@ export function createTerminal(root, selectors) {
     updateStatus();
     function close() {
       resize.disconnect();
+      clearMath(content);
       pager.close();
       pager.remove();
       prompt.hidden = false;
@@ -121,6 +126,7 @@ export function createTerminal(root, selectors) {
   }
 
   function clear() {
+    clearMath(transcript);
     transcript.replaceChildren();
   }
 
