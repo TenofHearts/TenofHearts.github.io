@@ -2,18 +2,9 @@ export function renderContent(titleText, source, baseUrl, document = globalThis.
   const reader = document.createElement('article');
   const heading = document.createElement('h2');
   const body = document.createElement('div');
-  const end = document.createElement('p');
-  const status = document.createElement('p');
-  reader.className = 'cli-pager';
-  reader.dataset.cliPager = 'true';
-  reader.tabIndex = 0;
-  reader.setAttribute('aria-label', 'Article pager');
+  reader.className = 'cli-article';
   heading.textContent = titleText;
-  body.className = 'cli-pager-body';
-  end.className = 'cli-pager-end';
-  end.textContent = '-- end --';
-  status.className = 'cli-pager-status';
-  status.textContent = ':';
+  body.className = 'cli-article-body';
   const content = source.cloneNode(true);
   content.querySelectorAll('[href], [src]').forEach(element => {
     for (const attribute of ['href', 'src']) {
@@ -23,7 +14,7 @@ export function renderContent(titleText, source, baseUrl, document = globalThis.
     }
   });
   body.replaceChildren(...content.childNodes);
-  reader.append(heading, body, end, status);
+  reader.append(heading, body);
   return reader;
 }
 

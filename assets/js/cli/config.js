@@ -12,8 +12,9 @@ export const cliConfig = {
   commands: {
     list: 'ls',
     help: 'help',
+    echo: 'echo',
     find: 'find',
-    read: 'read',
+    less: 'less',
     gui: 'gui',
     lang: 'lang',
     pwd: 'pwd',

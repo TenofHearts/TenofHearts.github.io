@@ -1,53 +1,70 @@
 import { renderCategoryList, renderPostList } from './posts.js';
 import { CliPath } from './path.js';
+import { parsePipeline } from './parse.js';
 
 export function createCommandRunner({ commands, posts, reader, about, terminal, guiUrl, language, languageUrls, switchLanguage, initialPath }) {
   let currentPath = initialPath && posts.category(initialPath.category || '') ? initialPath : new CliPath();
   terminal.setWorkingDirectory(currentPath.toString());
 
-  function run(line) {
-    const [command, ...words] = line.trim().split(/\s+/);
-    const argument = words.join(' ');
-    if (!command) return;
+  async function run(line) {
+    if (!line.trim()) return;
     terminal.appendCommand(line);
+    const pipeline = parsePipeline(line);
+    if (!pipeline) return terminal.appendText('Syntax error: unclosed quote or trailing backslash');
+    const [source, ...stages] = pipeline;
+    const piped = stages.length > 0;
+    if (!source.length || (piped && (stages.length !== 1 || stages[0].length !== 1 || stages[0][0] !== commands.less))) {
+      return terminal.appendText(`Usage: <command> | ${commands.less}`);
+    }
+    const [command, ...words] = source;
+    const argument = words.join(' ');
+    if (piped && ([commands.clear, commands.cd, commands.gui, commands.less].includes(command) ||
+        (command === commands.lang && argument && argument !== language))) {
+      return terminal.appendText(`${command}: cannot pipe this command`);
+    }
+    const write = piped ? terminal.openPager : terminal.append;
+    if (command === commands.echo) return write(`${argument}\n`);
     if (command === commands.clear) return terminal.clear();
-    if (command === commands.list) return list(argument);
+    if (command === commands.list) return list(argument, write);
     if (command === commands.cd) return changeDirectory(argument);
     if (command === commands.gui) return location.assign(guiUrl);
     if (command === commands.lang) {
-      if (!argument || argument === language) return terminal.appendText(language);
+      if (!argument || argument === language) return write(language);
       if (!Object.hasOwn(languageUrls, argument)) return terminal.appendText('Usage: lang [zh|en]');
       return switchLanguage(argument, currentPath);
     }
-    if (command === commands.help) return terminal.appendHelp(commands, language);
-    if (command === commands.pwd) return terminal.appendText(currentPath.toString());
-    if (command === commands.about) return terminal.append(about());
+    if (command === commands.help) return write(terminal.helpText(commands, language));
+    if (command === commands.pwd) return write(currentPath.toString());
+    if (command === commands.about) return terminal.openPager(about());
     if (command === commands.find && argument) {
       const matches = posts.find(argument).filter(post => !currentPath.isCategory || post.category === currentPath.category);
       return matches.length
-        ? terminal.append(renderPostList(matches, currentPath.category))
+        ? write(renderPostList(matches, currentPath.category))
         : terminal.appendText(`find: no posts matching "${argument}"`);
     }
-    if (command === commands.read && argument) {
-      const post = /^\d+$/.test(argument)
-        ? posts.at(currentPath.isCategory ? posts.inCategory(currentPath.category) : [], Number(argument))
-        : posts.resolve(currentPath.resolve(argument));
-      if (!post) return terminal.appendText(`read: no such post: ${argument}`);
-      return reader(post)
-        .then(pager => terminal.append(pager))
-        .catch(error => terminal.appendText(`read: ${error.message}`));
+    const less = command === commands.less;
+    if (less && !argument) return terminal.appendText('Missing filename ("less --help" for help)');
+    if (less && argument === '--help') return terminal.appendText('Usage: less <post> or <command> | less');
+    const name = less ? argument : source.join(' ');
+    const post = posts.resolve(currentPath.resolve(name)) || (/^\d+$/.test(name) && currentPath.isCategory &&
+      posts.at(posts.inCategory(currentPath.category), Number(name)));
+    if (!post) return terminal.appendText(less ? `${commands.less}: no such post: ${name}` : 'Unknown command or post. Type help.');
+    try {
+      const article = await reader(post);
+      return less ? terminal.openPager(article) : write(article);
+    } catch (error) {
+      return terminal.appendText(`${name}: ${error.message}`);
     }
-    unknown();
   }
 
-  function list(argument) {
+  function list(argument, write) {
     const target = currentPath.resolve(argument || '.');
-    if (target.isRoot) return terminal.append(renderCategoryList(posts.categories()));
+    if (target.isRoot) return write(renderCategoryList(posts.categories()));
     if (!target.isCategory || !posts.category(target.category)) {
       return terminal.appendText(`ls: cannot access '${argument}': No such category`);
     }
     const category = posts.category(target.category);
-    return terminal.append(renderPostList(posts.inCategory(category), currentPath.category));
+    return write(renderPostList(posts.inCategory(category), currentPath.category));
   }
 
   function changeDirectory(argument) {
@@ -59,10 +76,6 @@ export function createCommandRunner({ commands, posts, reader, about, terminal, 
     currentPath = path.isRoot ? new CliPath() : new CliPath([posts.category(path.category)]);
     terminal.setWorkingDirectory(currentPath.toString());
     return;
-  }
-
-  function unknown() {
-    terminal.appendText('Unknown command or argument. Type help.');
   }
 
   return { run, getPath: () => currentPath };

@@ -69,8 +69,9 @@ export function renderPostList(posts, category = null, document = globalThis.doc
     date.dateTime = post.link.closest('li').querySelector('time').dateTime;
     date.textContent = post.link.closest('li').querySelector('time').textContent;
     link.href = post.link.href;
-    link.textContent = post.link.textContent;
-    link.dataset.cliCommand = `read ${category ? post.name : `${post.category}/${post.name}`}`;
+    const path = category === post.category ? post.name : `${category ? '../' : ''}${post.category}/${post.name}`;
+    link.textContent = path;
+    link.dataset.cliCommand = path;
     item.append(number, ' ', date, ' ', link);
     list.append(item);
   });

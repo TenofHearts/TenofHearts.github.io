@@ -1,3 +1,5 @@
+import { parsePipeline } from './parse.js';
+
 export function createCompletion({ input, commands, languages, posts, getPath }) {
   const commandNames = Object.values(commands);
 
@@ -5,40 +7,47 @@ export function createCompletion({ input, commands, languages, posts, getPath })
     const value = input.value;
     const cursor = input.selectionStart;
     if (cursor !== value.length) return;
-    const parts = value.split(/\s+/);
+    const pipeline = parsePipeline(value);
+    if (!pipeline) return;
+    if (pipeline.length > 1) {
+      const stage = pipeline[1][0] ?? '';
+      if (pipeline.length === 2 && pipeline[0].length && pipeline[1].length <= 1 &&
+          value.endsWith(stage) && commands.less.startsWith(stage)) replace([commands.less], stage);
+      return;
+    }
+    const parts = value.trimStart().split(/\s+/);
     if (parts.length === 1) {
       const matches = commandNames.filter(command => command.startsWith(parts[0]));
-      return replace(matches, parts[0].length, matches, parts[0]);
+      return replace([...matches, ...pathMatches(parts[0], true)], parts[0]);
     }
 
     const command = parts[0];
     if (command === commands.lang && parts.length === 2) {
       const matches = languages.filter(lang => lang.startsWith(parts[1]));
-      return replace(matches, parts[1].length, matches, parts[1]);
+      return replace(matches, parts[1]);
     }
-    if (!['cd', 'ls', 'read'].includes(command)) return;
+    if (![commands.cd, commands.list, commands.less].includes(command)) return;
     const argument = parts.slice(1).join(' ');
+    replace(pathMatches(argument, command === commands.less), argument);
+  }
+
+  function pathMatches(argument, includePosts) {
     const slash = argument.lastIndexOf('/');
     const prefix = slash >= 0 ? argument.slice(0, slash + 1) : '';
     const namePrefix = slash >= 0 ? argument.slice(slash + 1) : argument;
-    const currentPath = getPath();
-    let matches = [];
-    if (command === 'cd' || (command === 'ls' && currentPath.isRoot && slash < 0) || (command === 'read' && currentPath.isRoot && slash < 0)) {
-      matches = posts.categoryMatches(namePrefix).map(category => `${prefix}${category}/`);
-    } else {
-      const directory = slash >= 0 ? currentPath.resolve(prefix.slice(0, -1)) : currentPath;
-      if (directory.isCategory) {
-        matches = posts.nameMatches(directory.category, namePrefix).map(name => `${prefix}${name}`);
-      }
+    const directory = getPath().resolve(prefix);
+    if (directory.isRoot) {
+      return posts.categoryMatches(namePrefix).map(category => `${prefix}${category}/`);
     }
-    replace(matches, argument.length, matches, argument);
+    return includePosts && directory.isCategory
+      ? posts.nameMatches(directory.category, namePrefix).map(name => `${prefix}${name}`) : [];
   }
 
-  function replace(matches, start, values, existing) {
+  function replace(matches, existing) {
     if (!matches.length) return;
-    const shared = commonPrefix(values);
-    const replacement = matches.length === 1 || shared.startsWith(existing) ? (matches.length === 1 ? values[0] : shared) : existing;
-    input.value = input.value.slice(0, input.value.length - start) + replacement;
+    const shared = commonPrefix(matches);
+    if (shared.length < existing.length) return;
+    input.value = input.value.slice(0, input.value.length - existing.length) + shared;
     input.setSelectionRange(input.value.length, input.value.length);
   }
 
